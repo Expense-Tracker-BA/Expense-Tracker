@@ -8,7 +8,7 @@ enum Category {
     Clothes,
     Food,
     Transport,
-    Electronics,
+    Electronics
 }
 
 

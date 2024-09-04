@@ -1,0 +1,64 @@
+package Backend.Service_Layer;
+
+import Backend.Controller;
+import Backend.Expense;
+
+import java.util.List;
+
+public class Service_Controller {
+
+    public ResponseT<List<Expense>> ExtractInDateRange(String lower_date, String upper_date)
+    {
+        try
+        {
+            ResponseT<List<Expense>> response =ResponseT.FromValue(Controller.getInstance().ExtractInDateRange(lower_date,upper_date));
+            return response;
+        }
+        catch (Exception e)
+        {
+            return ResponseT.FromError(e.getMessage());
+        }
+    }
+
+    public ResponseT<List<Expense>> ExtractByDescription(String description)
+    {
+        try
+        {
+            ResponseT<List<Expense>> response =ResponseT.FromValue(Controller.getInstance().ExtractByDescription(description));
+            return response;
+        }
+        catch (Exception e)
+        {
+            return ResponseT.FromError(e.getMessage());
+        }
+    }
+
+    public Response UpdateExpense(String description,double cost,String date, String category)
+    {
+        try
+        {
+            Controller.getInstance().UpdateExpense(description,cost,date, category);
+            Response response =new Response("updated expense successfully");
+            return response;
+        }
+        catch (Exception e)
+        {
+            return new Response(e.getMessage());
+        }
+    }
+
+    public Response RemoveExpense()// remove by what?
+    {
+        try
+        {
+            //Controller.getInstance().RemoveExpense(description,cost,date, category);
+            Response response =new Response("removed expense successfully");
+            return response;
+        }
+        catch (Exception e)
+        {
+            return new Response(e.getMessage());
+        }
+    }
+
+}
