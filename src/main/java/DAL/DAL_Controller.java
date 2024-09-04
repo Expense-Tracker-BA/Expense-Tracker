@@ -61,7 +61,6 @@ public class DAL_Controller {
             pstmt.setString(1, date);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                //tring description, double cost, String date, String category
                 expenses.add(new Expense(rs.getString("description"), rs.getDouble("Cost"),
                        rs.getString("Date"), rs.getString("Category")));
             }

@@ -1,6 +1,6 @@
 package com.example.expensetracker;
 
-import Backend.Controller;
+import Backend.Business_Layer.Controller;
 import Backend.Expense;
 import DAL.DAL_Controller;
 import javafx.application.Application;
