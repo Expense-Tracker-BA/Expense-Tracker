@@ -1,6 +1,7 @@
 package Backend;
 import DAL.DAL_Controller;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class Controller {
@@ -15,7 +16,7 @@ public class Controller {
 
     }
 
-    public void AddExpense(String date, String description, double cost, String category){
+    public void AddExpense(String date, String description, double cost, String category) throws SQLException {
         try{
             Expense expense = new Expense(description, cost, date, category);
             DAL_Controller.getInstance().InsertExpense(expense);
@@ -25,13 +26,12 @@ public class Controller {
         }
     }
 
-    public List<Expense> ExtractByDate(String date){
+    public List<Expense> ExtractByDate(String date) throws SQLException {
         try{
+            return DAL_Controller.getInstance().GetExpenseByDate(date);
         }
         catch(Exception e){
-            
+            throw e;
         }
     }
-
-
 }

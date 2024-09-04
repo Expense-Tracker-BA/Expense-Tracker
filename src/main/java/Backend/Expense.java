@@ -1,13 +1,14 @@
 package Backend;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 enum Category {
     Clothes,
     Food,
     Transport,
-    Electronics
+    Electronics,
 }
 
 
@@ -37,7 +38,30 @@ public class Expense {
     {
         this.description=description;
         this.cost=cost;
-        this.expense_date=LocalDate.parse(date);
+
+        // Define the date format
+        this.expense_date = ConvertToLocalDate(date);
+
         this.category=Category.valueOf(category);
     }
+
+    private LocalDate ConvertToLocalDate(String date){
+        // Define the date format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        try {
+            // Format the string to a LocalDate
+            LocalDate newDate = LocalDate.parse(date, formatter);
+            return newDate;
+        }
+        catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public String GetExpense(){
+        return "Description: " + description + ", Cost: " + cost + ", Date: " + expense_date + ", Category: " + category + ".\n";
+    }
+
+    // TODO:: Make a Set Expense as well in the future - to update an existing expense? (or in the DB instead?)
 }

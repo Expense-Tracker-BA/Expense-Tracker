@@ -3,6 +3,8 @@ import Backend.Expense;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+import java.util.List;
 
 public class DAL_Controller {
     private Expense_DAO expenses_table;
@@ -28,7 +30,7 @@ public class DAL_Controller {
         return formattedDate;
     }
 
-    public void InsertExpense(Expense expense) {
+    public void InsertExpense(Expense expense) throws SQLException {
         String sql = "INSERT INTO Expenses(description, Date, Cost, Category) VALUES(?,?,?,?)";
 
         try{
@@ -44,8 +46,31 @@ public class DAL_Controller {
             pstmt.close();
             conn.close();
         }
-        catch (SQLException e) {
+        catch (Exception e) {
+            throw e;
+        }
+    }
 
+    public List<Expense> GetExpenseByDate(String date) throws SQLException{
+        try {
+            List<Expense> expenses = new LinkedList<>();
+            String sql = "SELECT * FROM Expenses WHERE Date = ?";
+            Connection conn = DriverManager.getConnection(connection_string);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            // Set the date parameter
+            pstmt.setString(1, date);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                //tring description, double cost, String date, String category
+                expenses.add(new Expense(rs.getString("description"), rs.getDouble("Cost"),
+                       rs.getString("Date"), rs.getString("Category")));
+            }
+            pstmt.close();
+            conn.close();
+            return expenses;
+        }
+        catch(Exception e){
+            throw e;
         }
     }
 }

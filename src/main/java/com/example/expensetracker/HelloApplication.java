@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class HelloApplication extends Application {
     @Override
@@ -19,7 +20,16 @@ public class HelloApplication extends Application {
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
-        //Controller.getInstance().AddExpense(LocalDate.now().toString(), "something", 40.5, "Food");
+        try {
+            //Controller.getInstance().AddExpense(LocalDate.now().toString(), "something", 40.5, "Food");
+            List<Expense> expenses = Controller.getInstance().ExtractByDate("04-09-2024");
+            for(int i = 0; i < expenses.size(); i++) {
+                System.out.println(expenses.get(i).GetExpense());
+            }
+        }
+        catch(Exception e){
+
+        }
     }
 
     public static void main(String[] args) {
