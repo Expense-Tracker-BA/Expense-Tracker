@@ -21,7 +21,7 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
         try {
-            //Controller.getInstance().AddExpense(LocalDate.now().toString(), "something", 40.5, "Food");
+            //Controller.getInstance().AddExpense("04-09-2024", "something", 57.4, "Transport");
             List<Expense> expenses = Controller.getInstance().ExtractByDate("04-09-2024");
             for(int i = 0; i < expenses.size(); i++) {
                 System.out.println(expenses.get(i).GetExpense());
