@@ -72,4 +72,29 @@ public class DAL_Controller {
             throw e;
         }
     }
+
+    public List<Expense> GetExpenseByCategory(List<String> categories) throws SQLException {
+        try {
+            List<Expense> expenses = new LinkedList<>();
+            String sql = "SELECT * FROM Expenses WHERE Category = ?";
+            Connection conn = DriverManager.getConnection(connection_string);
+            //Foreach category
+            for(int i = 0; i < categories.size(); i++) {
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                // Set the category parameter
+                pstmt.setString(1, categories.get(i));
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    expenses.add(new Expense(rs.getString("description"), rs.getDouble("Cost"),
+                            rs.getString("Date"), rs.getString("Category")));
+                }
+                pstmt.close();
+            }
+            conn.close();
+            return expenses;
+        }
+        catch(Exception e){
+            throw e;
+        }
+    }
 }
