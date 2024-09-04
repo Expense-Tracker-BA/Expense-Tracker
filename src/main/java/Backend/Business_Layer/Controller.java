@@ -46,6 +46,15 @@ public class Controller {
         }
     }
 
+    public List<Backend.Expense> ExtractByCost(double lower_cost, double upper_cost) throws SQLException {
+        try{
+            return DAL_Controller.getInstance().GetExpenseByCost(lower_cost, upper_cost);
+        }
+        catch(Exception e){
+            throw e;
+        }
+    }
+
     public List<Backend.Expense> ExtractInDateRange(String lower_date, String upper_date) throws Exception {
         throw new Exception ("impleemnbet me");
     }

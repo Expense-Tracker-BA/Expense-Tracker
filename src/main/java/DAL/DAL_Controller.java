@@ -97,4 +97,27 @@ public class DAL_Controller {
             throw e;
         }
     }
+
+    public List<Expense> GetExpenseByCost(double lower_cost, double upper_cost) throws SQLException {
+        try {
+            List<Expense> expenses = new LinkedList<>();
+            String sql = "SELECT * FROM Expenses WHERE Cost BETWEEN ? AND ?";
+            Connection conn = DriverManager.getConnection(connection_string);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            // Set the cost parameters
+            pstmt.setDouble(1, lower_cost);
+            pstmt.setDouble(2, upper_cost);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                expenses.add(new Expense(rs.getString("description"), rs.getDouble("Cost"),
+                        rs.getString("Date"), rs.getString("Category")));
+            }
+            pstmt.close();
+            conn.close();
+            return expenses;
+        }
+        catch(Exception e){
+            throw e;
+        }
+    }
 }

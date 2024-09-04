@@ -39,6 +39,12 @@ public class HelloApplication extends Application {
             for(int i = 0; i < expenses.size(); i++) {
                 System.out.println(expenses.get(i).GetExpense());
             } */
+
+            //ExtractByCost test:
+            /* List<Expense> expenses = Controller.getInstance().ExtractByCost(0.0, 57.4);
+            for(int i = 0; i < expenses.size(); i++) {
+                System.out.println(expenses.get(i).GetExpense());
+            } */
         }
         catch(Exception e){
 
