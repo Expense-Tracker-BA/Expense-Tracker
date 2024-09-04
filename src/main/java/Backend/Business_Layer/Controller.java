@@ -1,4 +1,5 @@
 package Backend;
+import Backend.Service_Layer.ResponseT;
 import DAL.DAL_Controller;
 
 import java.sql.SQLException;
@@ -33,5 +34,17 @@ public class Controller {
         catch(Exception e){
             throw e;
         }
+    }
+
+    public List<Expense> ExtractInDateRange(String lower_date, String upper_date) throws Exception {
+        throw new Exception ("impleemnbet me");
+    }
+
+    public List<Expense> ExtractByDescription(String description) throws Exception {
+        throw new Exception ("impleemnbet me");
+    }
+
+    public void UpdateExpense(String description, double cost, String date, String category) throws Exception {
+        throw new Exception ("impleemnbet me");
     }
 }
