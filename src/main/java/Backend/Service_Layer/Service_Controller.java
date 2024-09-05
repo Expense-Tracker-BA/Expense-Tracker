@@ -23,12 +23,47 @@ public class Service_Controller {
         return instance;
     }
 
+    public ResponseT<String> AddExpense(String date, String description, double cost, String category){
+        try
+        {
+            ResponseT<String> response = ResponseT.FromValue(Controller.getInstance().AddExpense(date, description, cost, category));
+            return response;
+        }
+        catch (Exception e)
+        {
+            return ResponseT.FromError(e.getMessage());
+        }
+    }
+
+    public ResponseT<List<Expense>> ExtractByCategory(List<String> categories){
+        try
+        {
+            ResponseT<List<Expense>> response =ResponseT.FromValue(Controller.getInstance().ExtractByCategory(categories));
+            return response;
+        }
+        catch (Exception e)
+        {
+            return ResponseT.FromError(e.getMessage());
+        }
+    }
+
+    public ResponseT<List<Expense>> ExtractByCost(double lower_cost, double upper_cost){
+        try
+        {
+            ResponseT<List<Expense>> response =ResponseT.FromValue(Controller.getInstance().ExtractByCost(lower_cost, upper_cost));
+            return response;
+        }
+        catch (Exception e)
+        {
+            return ResponseT.FromError(e.getMessage());
+        }
+    }
+
     public ResponseT<List<Expense>> ExtractInDateRange(String lower_date, String upper_date)
     {
         try
         {
             ResponseT<List<Expense>> response =ResponseT.FromValue(Controller.getInstance().ExtractInDateRange(lower_date,upper_date));
-
             return response;
         }
         catch (Exception e)

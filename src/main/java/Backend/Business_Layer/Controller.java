@@ -21,27 +21,26 @@ public class Controller {
 
     }
 
-    public void AddExpense(String date, String description, double cost, String category) throws SQLException {
+    public String AddExpense(String date, String description, double cost, String category) throws Exception {
         try{
-            Expense expense = new Expense(description, cost, date, category);
-            DAL_Controller.getInstance().InsertExpense(expense);
+            if (check_if_valid_date_format(date)) {
+                Expense expense = new Expense(description, cost, date, category);
+                DAL_Controller.getInstance().InsertExpense(expense);
+                return "Added Expense successfully";
+            }
+            else{
+                throw new Exception("please enter a valid date format DD-MM-YYYY");
+            }
         }
         catch(Exception e){
             throw e;
         }
     }
 
-    public List<Expense> ExtractByDate(String date) throws SQLException {
-        try{
-            return DAL_Controller.getInstance().GetExpenseByDate(date);
-        }
-        catch(Exception e){
-            throw e;
-        }
-    }
 
     public List<Expense> ExtractByCategory(List<String> categories) throws SQLException {
         try{
+            //TODO:: a drop list in the frontend
             return DAL_Controller.getInstance().GetExpenseByCategory(categories);
         }
         catch(Exception e){
@@ -49,9 +48,14 @@ public class Controller {
         }
     }
 
-    public List<Expense> ExtractByCost(double lower_cost, double upper_cost) throws SQLException {
+    public List<Expense> ExtractByCost(double lower_cost, double upper_cost) throws Exception {
         try{
-            return DAL_Controller.getInstance().GetExpenseByCost(lower_cost, upper_cost);
+            if(lower_cost <= upper_cost) {
+                return DAL_Controller.getInstance().GetExpenseByCost(lower_cost, upper_cost);
+            }
+            else{
+                throw new Exception("lower cost can't be larger that the upper cost");
+            }
         }
         catch(Exception e){
             throw e;
