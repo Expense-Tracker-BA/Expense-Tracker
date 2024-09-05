@@ -1,4 +1,4 @@
-package Backend;
+package Backend.Business_Layer;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -13,6 +13,7 @@ enum Category {
 
 
 public class Expense {
+    public Integer getID() { return ID;}
     public String getDescription() {
         return description;
     }
@@ -24,11 +25,19 @@ public class Expense {
     public LocalDate getExpense_date() {
         return expense_date;
     }
+    public String getExpense_date_string() {
+
+
+        DateTimeFormatter output = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String desired_date_format=this.expense_date.format(output);
+        return desired_date_format;
+    }
 
     public String getCategory() {
         return category.name();
     }
 
+    private Integer ID;
     private String description;
     private double cost;
     private LocalDate expense_date;
@@ -45,7 +54,7 @@ public class Expense {
         this.category=Category.valueOf(category);
     }
 
-    public Expense (String description, double cost, String date, String category,boolean flag_from_database)
+    public Expense (Integer ID,String description, double cost, String date, String category,boolean flag_from_database)
     {
         this.description=description;
         this.cost=cost;
@@ -54,6 +63,7 @@ public class Expense {
         this.expense_date = ConvertToLocalDate_from_database(date);
 
         this.category=Category.valueOf(category);
+        this.ID=ID;
     }
 
     private LocalDate ConvertToLocalDate_from_database(String date) {

@@ -1,5 +1,5 @@
 package DAL;
-import Backend.Expense;
+import Backend.Business_Layer.Expense;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -61,7 +61,7 @@ public class DAL_Controller {
             pstmt.setString(1, date);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                expenses.add(new Expense(rs.getString("description"), rs.getDouble("Cost"),
+                expenses.add(new Expense(rs.getInt("ID"), rs.getString("description"), rs.getDouble("Cost"),
                        rs.getString("Date"), rs.getString("Category"),true));
             }
             pstmt.close();
@@ -85,7 +85,7 @@ public class DAL_Controller {
                 pstmt.setString(1, categories.get(i));
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
-                    expenses.add(new Expense(rs.getString("description"), rs.getDouble("Cost"),
+                    expenses.add(new Expense(rs.getInt("ID"),rs.getString("description"), rs.getDouble("Cost"),
                             rs.getString("Date"), rs.getString("Category"),true));
                 }
                 pstmt.close();
@@ -109,7 +109,7 @@ public class DAL_Controller {
             pstmt.setDouble(2, upper_cost);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                expenses.add(new Expense(rs.getString("description"), rs.getDouble("Cost"),
+                expenses.add(new Expense(rs.getInt("ID"),rs.getString("description"), rs.getDouble("Cost"),
                         rs.getString("Date"), rs.getString("Category"),true));
             }
             pstmt.close();
@@ -131,7 +131,7 @@ public class DAL_Controller {
             pstmt.setString(2, upper_date);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                expenses.add(new Expense(rs.getString("description"), rs.getDouble("Cost"),
+                expenses.add(new Expense(rs.getInt("ID"),rs.getString("description"), rs.getDouble("Cost"),
                         rs.getString("Date"), rs.getString("Category"),true));
             }
             pstmt.close();
@@ -151,7 +151,7 @@ public class DAL_Controller {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                expenses.add(new Expense(rs.getString("description"), rs.getDouble("Cost"),
+                expenses.add(new Expense(rs.getInt("ID"),rs.getString("description"), rs.getDouble("Cost"),
                         rs.getString("Date"), rs.getString("Category"),true));
             }
             pstmt.close();
