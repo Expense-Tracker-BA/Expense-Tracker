@@ -4,6 +4,8 @@ import Backend.Service_Layer.ResponseT;
 import DAL.DAL_Controller;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Controller {
@@ -28,7 +30,7 @@ public class Controller {
         }
     }
 
-    public List<Backend.Expense> ExtractByDate(String date) throws SQLException {
+    public List<Expense> ExtractByDate(String date) throws SQLException {
         try{
             return DAL_Controller.getInstance().GetExpenseByDate(date);
         }
@@ -37,7 +39,7 @@ public class Controller {
         }
     }
 
-    public List<Backend.Expense> ExtractByCategory(List<String> categories) throws SQLException {
+    public List<Expense> ExtractByCategory(List<String> categories) throws SQLException {
         try{
             return DAL_Controller.getInstance().GetExpenseByCategory(categories);
         }
@@ -46,7 +48,7 @@ public class Controller {
         }
     }
 
-    public List<Backend.Expense> ExtractByCost(double lower_cost, double upper_cost) throws SQLException {
+    public List<Expense> ExtractByCost(double lower_cost, double upper_cost) throws SQLException {
         try{
             return DAL_Controller.getInstance().GetExpenseByCost(lower_cost, upper_cost);
         }
@@ -55,11 +57,28 @@ public class Controller {
         }
     }
 
-    public List<Backend.Expense> ExtractInDateRange(String lower_date, String upper_date) throws Exception {
-        throw new Exception ("impleemnbet me");
+    public List<Expense> ExtractInDateRange(String lower_date, String upper_date) throws Exception {
+        try{
+            String converted_lower_Date=Date_string_converter(lower_date);
+            String converted_upper_Date=Date_string_converter(upper_date);
+            return DAL_Controller.getInstance().GetExpenseInDateRange(converted_lower_Date, converted_upper_Date);
+        }
+        catch(Exception e){
+            throw e;
+        }
     }
 
-    public List<Backend.Expense> ExtractByDescription(String description) throws Exception {
+    //converts from the format DD-MM-YYYY to YYYY-MM-DD
+    private String Date_string_converter(String date)
+    {
+        DateTimeFormatter output = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter input = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate inputnewDate = LocalDate.parse(date, input);
+        String desired_date_format=inputnewDate.format(output);
+        return desired_date_format;
+    }
+
+    public List<Expense> ExtractByDescription(String description) throws Exception {
         throw new Exception ("impleemnbet me");
     }
 

@@ -23,7 +23,7 @@ public class DAL_Controller {
     }
     private String LocalDateConverter(LocalDate date){
         // Define the date format
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         // Format the LocalDate to a string
         String formattedDate = date.format(formatter);
@@ -111,6 +111,28 @@ public class DAL_Controller {
             while (rs.next()) {
                 expenses.add(new Expense(rs.getString("description"), rs.getDouble("Cost"),
                         rs.getString("Date"), rs.getString("Category")));
+            }
+            pstmt.close();
+            conn.close();
+            return expenses;
+        }
+        catch(Exception e){
+            throw e;
+        }
+    }
+
+    public List<Expense> GetExpenseInDateRange(String lower_date, String upper_date) throws Exception {
+        try {
+            List<Expense> expenses = new LinkedList<>();
+            String sql = "SELECT * FROM Expenses WHERE Date BETWEEN ? AND ?";
+            Connection conn = DriverManager.getConnection(connection_string);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, lower_date);
+            pstmt.setString(2, upper_date);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                expenses.add(new Expense(rs.getString("description"), rs.getDouble("Cost"),
+                        rs.getString("Date"), rs.getString("Category"),true));
             }
             pstmt.close();
             conn.close();

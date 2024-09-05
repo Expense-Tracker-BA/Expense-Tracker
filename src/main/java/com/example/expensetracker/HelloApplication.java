@@ -2,6 +2,7 @@ package com.example.expensetracker;
 
 import Backend.Business_Layer.Controller;
 import Backend.Expense;
+import Backend.Service_Layer.Service_Controller;
 import DAL.DAL_Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,18 +10,21 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
 public class HelloApplication extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, SQLException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
+        Controller.getInstance().AddExpense("19-06-2024", "test179", 57.4, "Transport");
+        Service_Controller.GetInstance().ExtractInDateRange("01-09-1990","01-10-2005");
         try {
             //AddExpense Test:
             /* Controller.getInstance().AddExpense("04-09-2024", "something", 57.4, "Transport"); */
