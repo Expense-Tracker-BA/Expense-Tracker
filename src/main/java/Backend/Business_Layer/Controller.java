@@ -1,4 +1,5 @@
-package Backend;
+package Backend.Business_Layer;
+import Backend.Expense;
 import Backend.Service_Layer.ResponseT;
 import DAL.DAL_Controller;
 
@@ -27,7 +28,7 @@ public class Controller {
         }
     }
 
-    public List<Expense> ExtractByDate(String date) throws SQLException {
+    public List<Backend.Expense> ExtractByDate(String date) throws SQLException {
         try{
             return DAL_Controller.getInstance().GetExpenseByDate(date);
         }
@@ -36,11 +37,29 @@ public class Controller {
         }
     }
 
-    public List<Expense> ExtractInDateRange(String lower_date, String upper_date) throws Exception {
+    public List<Backend.Expense> ExtractByCategory(List<String> categories) throws SQLException {
+        try{
+            return DAL_Controller.getInstance().GetExpenseByCategory(categories);
+        }
+        catch(Exception e){
+            throw e;
+        }
+    }
+
+    public List<Backend.Expense> ExtractByCost(double lower_cost, double upper_cost) throws SQLException {
+        try{
+            return DAL_Controller.getInstance().GetExpenseByCost(lower_cost, upper_cost);
+        }
+        catch(Exception e){
+            throw e;
+        }
+    }
+
+    public List<Backend.Expense> ExtractInDateRange(String lower_date, String upper_date) throws Exception {
         throw new Exception ("impleemnbet me");
     }
 
-    public List<Expense> ExtractByDescription(String description) throws Exception {
+    public List<Backend.Expense> ExtractByDescription(String description) throws Exception {
         throw new Exception ("impleemnbet me");
     }
 
