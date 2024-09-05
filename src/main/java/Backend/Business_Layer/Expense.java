@@ -45,14 +45,51 @@ public class Expense {
         this.category=Category.valueOf(category);
     }
 
-    private LocalDate ConvertToLocalDate(String date){
+    public Expense (String description, double cost, String date, String category,boolean flag_from_database)
+    {
+        this.description=description;
+        this.cost=cost;
+
         // Define the date format
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        this.expense_date = ConvertToLocalDate_from_database(date);
+
+        this.category=Category.valueOf(category);
+    }
+
+    private LocalDate ConvertToLocalDate_from_database(String date) {
+        // Define the date format
+
+        DateTimeFormatter input = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter output = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         try {
             // Format the string to a LocalDate
-            LocalDate newDate = LocalDate.parse(date, formatter);
-            return newDate;
+
+            LocalDate inputdate = LocalDate.parse(date, input);
+            String desired_date_format=inputdate.format(output);
+            LocalDate outputdate=LocalDate.parse(desired_date_format, output);
+
+            return outputdate;
+        }
+        catch (Exception e) {
+            throw e;
+        }
+    }
+
+    private LocalDate ConvertToLocalDate(String date){
+        // Define the date format
+
+        DateTimeFormatter output = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter input = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        try {
+            // Format the string to a LocalDate
+
+            LocalDate inputnewDate = LocalDate.parse(date, input);
+            String desired_date_format=inputnewDate.format(output);
+            LocalDate outputdate=LocalDate.parse(desired_date_format, output);
+
+            return outputdate;
         }
         catch (Exception e) {
             throw e;

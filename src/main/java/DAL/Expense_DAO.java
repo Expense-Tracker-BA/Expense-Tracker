@@ -32,7 +32,7 @@ public class Expense_DAO {
             stmt.execute(sql);
             conn.close();
         } catch (SQLException e) {
-            System.out.println("shit");
+
 
         }
 

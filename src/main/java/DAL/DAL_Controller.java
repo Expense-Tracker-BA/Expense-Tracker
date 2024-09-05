@@ -23,7 +23,7 @@ public class DAL_Controller {
     }
     private String LocalDateConverter(LocalDate date){
         // Define the date format
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         // Format the LocalDate to a string
         String formattedDate = date.format(formatter);
@@ -62,7 +62,7 @@ public class DAL_Controller {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 expenses.add(new Expense(rs.getString("description"), rs.getDouble("Cost"),
-                       rs.getString("Date"), rs.getString("Category")));
+                       rs.getString("Date"), rs.getString("Category"),true));
             }
             pstmt.close();
             conn.close();
@@ -86,7 +86,7 @@ public class DAL_Controller {
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
                     expenses.add(new Expense(rs.getString("description"), rs.getDouble("Cost"),
-                            rs.getString("Date"), rs.getString("Category")));
+                            rs.getString("Date"), rs.getString("Category"),true));
                 }
                 pstmt.close();
             }
@@ -110,11 +110,100 @@ public class DAL_Controller {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 expenses.add(new Expense(rs.getString("description"), rs.getDouble("Cost"),
-                        rs.getString("Date"), rs.getString("Category")));
+                        rs.getString("Date"), rs.getString("Category"),true));
             }
             pstmt.close();
             conn.close();
             return expenses;
+        }
+        catch(Exception e){
+            throw e;
+        }
+    }
+
+    public List<Expense> GetExpenseInDateRange(String lower_date, String upper_date) throws Exception {
+        try {
+            List<Expense> expenses = new LinkedList<>();
+            String sql = "SELECT * FROM Expenses WHERE Date BETWEEN ? AND ?";
+            Connection conn = DriverManager.getConnection(connection_string);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, lower_date);
+            pstmt.setString(2, upper_date);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                expenses.add(new Expense(rs.getString("description"), rs.getDouble("Cost"),
+                        rs.getString("Date"), rs.getString("Category"),true));
+            }
+            pstmt.close();
+            conn.close();
+            return expenses;
+        }
+        catch(Exception e){
+            throw e;
+        }
+    }
+
+    public List<Expense> ExtractByDescription(String description) throws SQLException {
+        try {
+            List<Expense> expenses = new LinkedList<>();
+            String sql = "SELECT * FROM Expenses WHERE description LIKE '%"+description+"%'";
+            Connection conn = DriverManager.getConnection(connection_string);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                expenses.add(new Expense(rs.getString("description"), rs.getDouble("Cost"),
+                        rs.getString("Date"), rs.getString("Category"),true));
+            }
+            pstmt.close();
+            conn.close();
+            return expenses;
+        }
+        catch(Exception e){
+            throw e;
+        }
+    }
+
+    public void UpdateExpense(Integer id, String description, double cost, String date, String category) throws Exception {
+        try {
+            String sql = "UPDATE Expenses SET description = ? , Date = ? , Cost = ? , Category = ?  WHERE ID = ?;";
+            Connection conn = DriverManager.getConnection(connection_string);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, description);
+            pstmt.setString(2, date);
+            pstmt.setDouble(3, cost);
+            pstmt.setString(4, category);
+            pstmt.setInt(5, id);
+           int num_of_changed_rows= pstmt.executeUpdate();
+           if (num_of_changed_rows==0)
+           {
+               throw new Exception("no Expense with the provided ID: "+id);
+           }
+
+            pstmt.close();
+            conn.close();
+
+        }
+        catch(Exception e){
+            throw e;
+        }
+
+    }
+
+    public void RemoveExpense(Integer id) throws Exception {
+        try {
+            String sql = "DELETE FROM Expenses WHERE ID = ?;";
+            Connection conn = DriverManager.getConnection(connection_string);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            int num_of_changed_rows= pstmt.executeUpdate();
+            if (num_of_changed_rows==0)
+            {
+                throw new Exception("no Expense with the provided ID: "+id);
+            }
+
+            pstmt.close();
+            conn.close();
+
         }
         catch(Exception e){
             throw e;
