@@ -188,4 +188,25 @@ public class DAL_Controller {
         }
 
     }
+
+    public void RemoveExpense(Integer id) throws Exception {
+        try {
+            String sql = "DELETE FROM Expenses WHERE ID = ?;";
+            Connection conn = DriverManager.getConnection(connection_string);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            int num_of_changed_rows= pstmt.executeUpdate();
+            if (num_of_changed_rows==0)
+            {
+                throw new Exception("no Expense with the provided ID: "+id);
+            }
+
+            pstmt.close();
+            conn.close();
+
+        }
+        catch(Exception e){
+            throw e;
+        }
+    }
 }

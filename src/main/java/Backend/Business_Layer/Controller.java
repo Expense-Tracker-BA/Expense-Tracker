@@ -102,4 +102,15 @@ public class Controller {
             throw e;
         }
     }
+
+    public String RemoveExpense(Integer id) throws Exception {
+        try{
+
+            DAL_Controller.getInstance().RemoveExpense(id);
+            return "Deleted expense successfully";
+        }
+        catch(Exception e){
+            throw e;
+        }
+    }
 }

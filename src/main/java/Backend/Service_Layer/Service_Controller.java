@@ -63,17 +63,16 @@ public class Service_Controller {
         }
     }
 
-    public Response RemoveExpense()// remove by what?
+    public ResponseT<String> RemoveExpense(Integer ID)
     {
         try
         {
-            //Controller.getInstance().RemoveExpense(description,cost,date, category);
-            Response response =new Response("removed expense successfully");
+            ResponseT<String> response=ResponseT.FromValue(Controller.getInstance().RemoveExpense(ID));
             return response;
         }
         catch (Exception e)
         {
-            return new Response(e.getMessage());
+            return ResponseT.FromError(e.getMessage());
         }
     }
 

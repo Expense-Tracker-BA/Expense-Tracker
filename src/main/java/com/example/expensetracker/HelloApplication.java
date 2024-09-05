@@ -24,6 +24,9 @@ public class HelloApplication extends Application {
         //UpdateExpense Test:
       // ResponseT<String> shit= Service_Controller.GetInstance().UpdateExpense(69,"new_test",69.69,"01-01-2000","Clothes");
       // System.out.println(shit.ErrorMessage);
+        //RemoveExpense Test:
+//        ResponseT<String> shit= Service_Controller.GetInstance().RemoveExpense(69);
+//         System.out.println(shit.ErrorMessage);
 
         try {
             //AddExpense Test:
