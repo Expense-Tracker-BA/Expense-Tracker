@@ -50,17 +50,16 @@ public class Service_Controller {
         }
     }
 
-    public Response UpdateExpense(String description,double cost,String date, String category)
+    public ResponseT<String> UpdateExpense(Integer ID,String description,double cost,String date, String category)
     {
         try
         {
-            Controller.getInstance().UpdateExpense(description,cost,date, category);
-            Response response =new Response("updated expense successfully");
+            ResponseT<String> response=ResponseT.FromValue(Controller.getInstance().UpdateExpense(ID,description,cost,date, category));
             return response;
         }
         catch (Exception e)
         {
-            return new Response(e.getMessage());
+            return ResponseT.FromError(e.getMessage());
         }
     }
 

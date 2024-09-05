@@ -1,7 +1,7 @@
 package Backend.Service_Layer;
 
 public class ResponseT<T> extends Response{
-    private final  T Value;
+    public final  T Value;
     private ResponseT(T value, String msg)
     {
         this.Value = value;

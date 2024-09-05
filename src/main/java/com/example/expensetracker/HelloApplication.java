@@ -1,19 +1,13 @@
 package com.example.expensetracker;
 
-import Backend.Business_Layer.Controller;
-import Backend.Expense;
+import Backend.Service_Layer.ResponseT;
 import Backend.Service_Layer.Service_Controller;
-import DAL.DAL_Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.LinkedList;
-import java.util.List;
 
 public class HelloApplication extends Application {
     @Override
@@ -27,6 +21,9 @@ public class HelloApplication extends Application {
         //Service_Controller.GetInstance().ExtractInDateRange("01-09-1990","01-10-2005");
         //ExtractByDescription Test:
         //Service_Controller.GetInstance().ExtractByDescription("test");
+        //UpdateExpense Test:
+      // ResponseT<String> shit= Service_Controller.GetInstance().UpdateExpense(69,"new_test",69.69,"01-01-2000","Clothes");
+      // System.out.println(shit.ErrorMessage);
 
         try {
             //AddExpense Test:

@@ -162,4 +162,30 @@ public class DAL_Controller {
             throw e;
         }
     }
+
+    public void UpdateExpense(Integer id, String description, double cost, String date, String category) throws Exception {
+        try {
+            String sql = "UPDATE Expenses SET description = ? , Date = ? , Cost = ? , Category = ?  WHERE ID = ?;";
+            Connection conn = DriverManager.getConnection(connection_string);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, description);
+            pstmt.setDouble(2, cost);
+            pstmt.setString(3, date);
+            pstmt.setString(4, category);
+            pstmt.setInt(5, id);
+           int num_of_changed_rows= pstmt.executeUpdate();
+           if (num_of_changed_rows==0)
+           {
+               throw new Exception("no Expense with the provided ID: "+id);
+           }
+
+            pstmt.close();
+            conn.close();
+
+        }
+        catch(Exception e){
+            throw e;
+        }
+
+    }
 }

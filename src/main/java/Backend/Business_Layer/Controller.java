@@ -92,7 +92,14 @@ public class Controller {
         }
     }
 
-    public void UpdateExpense(String description, double cost, String date, String category) throws Exception {
-        throw new Exception ("impleemnbet me");
+    public String UpdateExpense(Integer ID,String description, double cost, String date, String category) throws Exception {
+        try{
+            String converted_date=Date_string_converter(date);
+            DAL_Controller.getInstance().UpdateExpense(ID,description, cost, converted_date, category);
+            return "updated expense successfully";
+        }
+        catch(Exception e){
+            throw e;
+        }
     }
 }
