@@ -3,7 +3,7 @@ package com.example.expensetracker;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class HelloController {
+public class ExpenseTrackerController {
     @FXML
     private Label welcomeText;
 
