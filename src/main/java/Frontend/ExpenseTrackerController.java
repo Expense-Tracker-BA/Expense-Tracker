@@ -1,4 +1,4 @@
-package com.example.expensetracker;
+package Frontend;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

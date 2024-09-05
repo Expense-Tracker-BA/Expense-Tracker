@@ -4,6 +4,6 @@ module com.example.expensetracker {
     requires java.sql;
 
 
-    opens com.example.expensetracker to javafx.fxml;
-    exports com.example.expensetracker;
+    opens Frontend to javafx.fxml;
+    exports Frontend;
 }
