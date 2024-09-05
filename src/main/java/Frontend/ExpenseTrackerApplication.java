@@ -1,11 +1,15 @@
 package Frontend;
 
+import Backend.Business_Layer.Expense;
+import Backend.Service_Layer.ResponseT;
+import Backend.Service_Layer.Service_Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ExpenseTrackerApplication extends Application {
     @Override
@@ -16,7 +20,7 @@ public class ExpenseTrackerApplication extends Application {
         stage.setScene(scene);
         stage.show();
         //ExtractInDateRange Test:
-        //ResponseT<List<Expense>> shit=Service_Controller.GetInstance().ExtractInDateRange("01-09-1990","01-10-2005");
+       // ResponseT<List<Expense>> shit= Service_Controller.GetInstance().ExtractInDateRange("01-09-1990","01-10-2005");
         //System.out.println(shit.ErrorMessage);
         //ExtractByDescription Test:
         //Service_Controller.GetInstance().ExtractByDescription("test");

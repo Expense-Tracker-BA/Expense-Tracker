@@ -1,7 +1,7 @@
 package Backend.Service_Layer;
 
 import Backend.Business_Layer.Controller;
-import Backend.Expense;
+import Backend.Business_Layer.Expense;
 
 import java.util.List;
 

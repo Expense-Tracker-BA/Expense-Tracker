@@ -1,8 +1,9 @@
 package Frontend;
 
-import Backend.Expense;
+import Backend.Business_Layer.Expense;
 import Backend.Service_Layer.ResponseT;
 import Backend.Service_Layer.Service_Controller;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -32,13 +33,16 @@ public class ExpenseTrackerController {
     private TableView<Expense> expenseTable;
 
     @FXML
+    private TableColumn<Expense, Integer> IDColumn;
+
+    @FXML
     private TableColumn<Expense, String> descriptionColumn;
 
     @FXML
     private TableColumn<Expense, Double> costColumn;
 
     @FXML
-    private TableColumn<Expense, LocalDate> dateColumn;
+    private TableColumn<Expense, String> dateColumn;
 
     @FXML
     private TableColumn<Expense, String> categoryColumn;
@@ -48,9 +52,10 @@ public class ExpenseTrackerController {
     @FXML
     public void initialize() {
         // Set up the columns in the table
+        IDColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         costColumn.setCellValueFactory(new PropertyValueFactory<>("cost"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("expense_date"));
+        dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExpense_date_string()));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
 
         // Initially empty table
