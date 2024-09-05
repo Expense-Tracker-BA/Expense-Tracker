@@ -100,5 +100,6 @@ public class Expense {
         return "Description: " + description + ", Cost: " + cost + ", Date: " + expense_date + ", Category: " + category + ".\n";
     }
 
+
     // TODO:: Make a Set Expense as well in the future - to update an existing expense? (or in the DB instead?)
 }

@@ -1,24 +1,18 @@
-package com.example.expensetracker;
+package Frontend;
 
-import Backend.Business_Layer.Controller;
-import Backend.Expense;
-import Backend.Service_Layer.ResponseT;
-import Backend.Service_Layer.Service_Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.LinkedList;
 
-public class HelloApplication extends Application {
+public class ExpenseTrackerApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        FXMLLoader fxmlLoader = new FXMLLoader(ExpenseTrackerApplication.class.getResource("ExpenseTracker-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1200, 700);
+        stage.setTitle("Expense Tracker!");
         stage.setScene(scene);
         stage.show();
         //ExtractInDateRange Test:
