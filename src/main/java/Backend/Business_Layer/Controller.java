@@ -79,7 +79,17 @@ public class Controller {
     }
 
     public List<Expense> ExtractByDescription(String description) throws Exception {
-        throw new Exception ("impleemnbet me");
+        try{
+            List<Expense> test=DAL_Controller.getInstance().ExtractByDescription(description);
+            for(Expense exp : test)
+            {
+                System.out.println(exp.getDescription());
+            }
+            return DAL_Controller.getInstance().ExtractByDescription(description);
+        }
+        catch(Exception e){
+            throw e;
+        }
     }
 
     public void UpdateExpense(String description, double cost, String date, String category) throws Exception {

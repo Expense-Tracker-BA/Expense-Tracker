@@ -17,14 +17,17 @@ import java.util.List;
 
 public class HelloApplication extends Application {
     @Override
-    public void start(Stage stage) throws IOException, SQLException {
+    public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
-        Controller.getInstance().AddExpense("19-06-2024", "test179", 57.4, "Transport");
-        Service_Controller.GetInstance().ExtractInDateRange("01-09-1990","01-10-2005");
+        //ExtractInDateRange Test:
+        //Service_Controller.GetInstance().ExtractInDateRange("01-09-1990","01-10-2005");
+        //ExtractByDescription Test:
+        //Service_Controller.GetInstance().ExtractByDescription("test");
+
         try {
             //AddExpense Test:
             /* Controller.getInstance().AddExpense("04-09-2024", "something", 57.4, "Transport"); */
