@@ -1,5 +1,7 @@
 package com.example.expensetracker;
 
+import Backend.Business_Layer.Controller;
+import Backend.Expense;
 import Backend.Service_Layer.ResponseT;
 import Backend.Service_Layer.Service_Controller;
 import javafx.application.Application;
@@ -8,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class HelloApplication extends Application {
     @Override
@@ -18,11 +21,12 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
         //ExtractInDateRange Test:
-        //Service_Controller.GetInstance().ExtractInDateRange("01-09-1990","01-10-2005");
+        ResponseT<List<Expense>> shit=Service_Controller.GetInstance().ExtractInDateRange("01-09-1990","01-10-2005");
+        System.out.println(shit.ErrorMessage);
         //ExtractByDescription Test:
         //Service_Controller.GetInstance().ExtractByDescription("test");
         //UpdateExpense Test:
-      // ResponseT<String> shit= Service_Controller.GetInstance().UpdateExpense(69,"new_test",69.69,"01-01-2000","Clothes");
+      // ResponseT<String> shit= Service_Controller.GetInstance().UpdateExpense(11,"new_test",69.69,"01-01-2000","Clothes");
       // System.out.println(shit.ErrorMessage);
         //RemoveExpense Test:
 //        ResponseT<String> shit= Service_Controller.GetInstance().RemoveExpense(69);
@@ -30,7 +34,7 @@ public class HelloApplication extends Application {
 
         try {
             //AddExpense Test:
-            /* Controller.getInstance().AddExpense("04-09-2024", "something", 57.4, "Transport"); */
+             Controller.getInstance().AddExpense("04-09-2024", "shit43", 57.4, "Transport");
 
             //ExtractByDate Test:
             /* List<Expense> expenses = Controller.getInstance().ExtractByDate("04-09-2024");

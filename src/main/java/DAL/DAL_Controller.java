@@ -169,8 +169,8 @@ public class DAL_Controller {
             Connection conn = DriverManager.getConnection(connection_string);
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, description);
-            pstmt.setDouble(2, cost);
-            pstmt.setString(3, date);
+            pstmt.setString(2, date);
+            pstmt.setDouble(3, cost);
             pstmt.setString(4, category);
             pstmt.setInt(5, id);
            int num_of_changed_rows= pstmt.executeUpdate();

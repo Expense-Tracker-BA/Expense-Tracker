@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class Controller {
     private static Controller instance = new Controller();
@@ -59,13 +60,25 @@ public class Controller {
 
     public List<Expense> ExtractInDateRange(String lower_date, String upper_date) throws Exception {
         try{
-            String converted_lower_Date=Date_string_converter(lower_date);
-            String converted_upper_Date=Date_string_converter(upper_date);
-            return DAL_Controller.getInstance().GetExpenseInDateRange(converted_lower_Date, converted_upper_Date);
+            if (check_if_valid_date_format(lower_date) && check_if_valid_date_format(upper_date) ) {
+                String converted_lower_Date = Date_string_converter(lower_date);
+                String converted_upper_Date = Date_string_converter(upper_date);
+                return DAL_Controller.getInstance().GetExpenseInDateRange(converted_lower_Date, converted_upper_Date);
+            }
+            else
+            {
+                throw new Exception("please enter a valid date format DD-MM-YYYY");
+            }
         }
         catch(Exception e){
             throw e;
         }
+    }
+
+    private boolean check_if_valid_date_format(String date) {
+        Pattern p = Pattern.compile("\\d{2}-\\d{2}-\\d{4}");
+        return p.matcher(date).matches();
+
     }
 
     //converts from the format DD-MM-YYYY to YYYY-MM-DD
