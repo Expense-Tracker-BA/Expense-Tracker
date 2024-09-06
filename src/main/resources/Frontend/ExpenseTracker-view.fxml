@@ -45,7 +45,9 @@
                 <TableColumn fx:id="categoryColumn" text="Category" prefWidth="200"/>
             </columns>
         </TableView>
-
+    </HBox>
+    <HBox spacing="10.0" alignment="CENTER">
+        <Label fx:id="totalCostLabel" text="Total Cost: $0.00" style="-fx-font-size: 16px;"/>
     </HBox>
     <HBox spacing="10.0" alignment="CENTER">
         <Button fx:id="clear_button" text="Clear Filters!" visible="false" style="-fx-text-fill: red;" onAction="#Clear_filters"/>

@@ -16,6 +16,8 @@ import java.util.List;
 
 public class ExpenseTrackerController {
     @FXML
+    private Label totalCostLabel;
+    @FXML
     private Button desc_filter_button;
     @FXML
     private TextField description_filter_text;
@@ -73,6 +75,10 @@ public class ExpenseTrackerController {
     {
         ResponseT<List<Expense>> expensesResponse = Service_Controller.GetInstance().ExtractAll();
         expenseList.setAll(expensesResponse.Value);
+        ResponseT<Double> total_cost=Service_Controller.GetInstance().Get_Curr_Sum();
+        String formattedCost = String.format("%.3f", total_cost.Value);
+        this.totalCostLabel.setText("Total Cost: $"+formattedCost);
+
     }
 
 
@@ -118,6 +124,9 @@ public class ExpenseTrackerController {
             clear_button.setVisible(true);
             description_filter_text.setDisable(true);
             desc_filter_button.setDisable(true);
+            ResponseT<Double> total_cost=Service_Controller.GetInstance().Get_Curr_Sum();
+            String formattedCost = String.format("%.3f", total_cost.Value);
+            this.totalCostLabel.setText("Total Cost: $"+formattedCost);
         }
     }
 }
