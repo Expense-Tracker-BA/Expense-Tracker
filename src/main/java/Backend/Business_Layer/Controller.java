@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class Controller {
+    private double curr_sum;
     private static Controller instance = new Controller();
     public static Controller getInstance(){
         return instance;
@@ -19,6 +20,7 @@ public class Controller {
 
     private Controller()
     {
+        curr_sum=0;
         list_of_expenses=null;
     }
 
@@ -63,6 +65,12 @@ public class Controller {
         }
     }
 
+    public double Get_current_sum()
+    {
+        return this.curr_sum;
+
+    }
+
     public List<Expense> ExtractInDateRange(String lower_date, String upper_date) throws Exception {
         try{
             if (check_if_valid_date_format(lower_date) && check_if_valid_date_format(upper_date) ) {
@@ -97,18 +105,41 @@ public class Controller {
     }
 
     public List<Expense> ExtractByDescription(String description) throws Exception {
-        try{
-            List<Expense> test=DAL_Controller.getInstance().ExtractByDescription(description);
-            for(Expense exp : test)
-            {
-                System.out.println(exp.getDescription());
+
+        try {
+            if (this.list_of_expenses == null) {
+
+                this.list_of_expenses = DAL_Controller.getInstance().ExtractByDescription(description);
+                Update_total_cost();
+                return this.list_of_expenses;
+
+            } else {
+                List<Expense> filtered_list = new ArrayList<>();
+                for (Expense expense : this.list_of_expenses) {
+                        if (expense.getDescription().contains(description))
+                        {
+
+                            filtered_list.add(expense);
+                        }
+                }
+
+                this.list_of_expenses=filtered_list;
+                Update_total_cost();
+                return filtered_list;
             }
-            return DAL_Controller.getInstance().ExtractByDescription(description);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             throw e;
         }
     }
+
+    private void Update_total_cost() {
+        this.curr_sum=0;
+        for(Expense expense:this.list_of_expenses)
+        {
+            this.curr_sum=this.curr_sum+expense.getCost();
+        }
+    }
+
 
     public String UpdateExpense(Integer ID,String description, double cost, String date, String category) throws Exception {
         try{
@@ -135,7 +166,12 @@ public class Controller {
     public List<Expense> ExtractAll() throws SQLException {
         try{
             this.list_of_expenses=null;
-            return DAL_Controller.getInstance().ExtractAll();
+            this.curr_sum=0;
+            List<Expense> expenses=DAL_Controller.getInstance().ExtractAll();
+            for (Expense expense : expenses) {
+                    this.curr_sum=this.curr_sum+expense.getCost();
+            }
+            return expenses;
 
         }
         catch(Exception e){

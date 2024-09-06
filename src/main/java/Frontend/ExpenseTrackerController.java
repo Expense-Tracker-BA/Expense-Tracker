@@ -15,6 +15,25 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class ExpenseTrackerController {
+
+    @FXML
+    private Label desc_filter_ErrorMessage;
+    @FXML
+    private Label insert_expense_ErrorMessage;
+    @FXML
+    private TextField new_expense_date;
+    @FXML
+    private TextField new_expense_desc;
+    @FXML
+    private TextField new_expense_cost;
+    @FXML
+    private ChoiceBox<String> categorychoicebox;
+    @FXML
+    private Label totalCostLabel;
+    @FXML
+    private Button desc_filter_button;
+    @FXML
+    private TextField description_filter_text;
     @FXML
     private Button clear_button;
     @FXML
@@ -62,6 +81,10 @@ public class ExpenseTrackerController {
 
         expenseTable.setItems(expenseList);
         ExtractAll();
+        ObservableList<String> categories = FXCollections.observableArrayList(
+                "Clothes", "Transport", "Food", "Electronics"
+        );
+        categorychoicebox.setItems(categories);
 
     }
 
@@ -69,6 +92,10 @@ public class ExpenseTrackerController {
     {
         ResponseT<List<Expense>> expensesResponse = Service_Controller.GetInstance().ExtractAll();
         expenseList.setAll(expensesResponse.Value);
+        ResponseT<Double> total_cost=Service_Controller.GetInstance().Get_Curr_Sum();
+        String formattedCost = String.format("%.3f", total_cost.Value);
+        this.totalCostLabel.setText("Total Cost: $"+formattedCost);
+
     }
 
 
@@ -94,6 +121,44 @@ public class ExpenseTrackerController {
     @FXML
     public void Clear_filters() {
         clear_button.setVisible(false);
+        description_filter_text.setDisable(false);
+        description_filter_text.setText("");
+        desc_filter_button.setDisable(false);
+
         ExtractAll();
+    }
+    @FXML
+    public void on_desc_filter_Click( ) {
+        String description = description_filter_text.getText();
+        ResponseT<List<Expense>> expensesResponse = Service_Controller.GetInstance().ExtractByDescription(description);
+
+        if (expensesResponse.ErrorOccured()) {
+            desc_filter_ErrorMessage.setText(expensesResponse.ErrorMessage);
+        } else {
+            desc_filter_ErrorMessage.setText("");
+            List<Expense> expenses = expensesResponse.Value;
+            expenseList.setAll(expenses);
+            clear_button.setVisible(true);
+            description_filter_text.setDisable(true);
+            desc_filter_button.setDisable(true);
+            ResponseT<Double> total_cost=Service_Controller.GetInstance().Get_Curr_Sum();
+            String formattedCost = String.format("%.3f", total_cost.Value);
+            this.totalCostLabel.setText("Total Cost: $"+formattedCost);
+        }
+    }
+
+    public void on_insert_expense_Click(ActionEvent actionEvent) {
+        String description = new_expense_desc.getText();
+        String Date= new_expense_date.getText();
+        Double cost=Double.parseDouble(new_expense_cost.getText());
+        String category=categorychoicebox.getValue();
+        ResponseT<String> expensesResponse = Service_Controller.GetInstance().AddExpense(Date,description,cost,category);
+
+        if (expensesResponse.ErrorOccured()) {
+            insert_expense_ErrorMessage.setText(expensesResponse.ErrorMessage);
+        } else {
+            insert_expense_ErrorMessage.setText("");
+            ExtractAll();
+        }
     }
 }

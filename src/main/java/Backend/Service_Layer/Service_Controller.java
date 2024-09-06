@@ -72,6 +72,19 @@ public class Service_Controller {
         }
     }
 
+    public ResponseT<Double> Get_Curr_Sum()
+    {
+        try
+        {
+            ResponseT<Double> response =ResponseT.FromValue(Controller.getInstance().Get_current_sum());
+            return response;
+        }
+        catch (Exception e)
+        {
+            return ResponseT.FromError(e.getMessage());
+        }
+    }
+
     public ResponseT<List<Expense>> ExtractByDescription(String description)
     {
         try
