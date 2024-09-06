@@ -3,6 +3,7 @@ import Backend.Business_Layer.Expense;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -208,5 +209,26 @@ public class DAL_Controller {
         catch(Exception e){
             throw e;
         }
+    }
+
+    public List<Expense> ExtractAll() throws SQLException {
+        try {
+            List<Expense> expenses=new ArrayList<>();
+            String sql = "SELECT * FROM Expenses";
+            Connection conn = DriverManager.getConnection(connection_string);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                expenses.add(new Expense(rs.getInt("ID"),rs.getString("description"), rs.getDouble("Cost"),
+                        rs.getString("Date"), rs.getString("Category"),true));
+            }
+            pstmt.close();
+            conn.close();
+            return expenses;
+        }
+        catch(Exception e){
+            throw e;
+        }
+
     }
 }

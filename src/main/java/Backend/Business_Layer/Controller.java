@@ -5,6 +5,7 @@ import DAL.DAL_Controller;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -13,11 +14,12 @@ public class Controller {
     public static Controller getInstance(){
         return instance;
     }
+    private List<Expense> list_of_expenses;
 
 
-    public Controller()
+    private Controller()
     {
-
+        list_of_expenses=null;
     }
 
     public String AddExpense(String date, String description, double cost, String category) throws Exception {
@@ -124,6 +126,17 @@ public class Controller {
 
             DAL_Controller.getInstance().RemoveExpense(id);
             return "Deleted expense successfully";
+        }
+        catch(Exception e){
+            throw e;
+        }
+    }
+
+    public List<Expense> ExtractAll() throws SQLException {
+        try{
+            this.list_of_expenses=null;
+            return DAL_Controller.getInstance().ExtractAll();
+
         }
         catch(Exception e){
             throw e;

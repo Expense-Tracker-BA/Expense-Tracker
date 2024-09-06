@@ -17,21 +17,32 @@
 
     <!-- HBox to place Label and TextFields side by side -->
     <HBox spacing="10.0" alignment="TOP_LEFT">
+
         <Label fx:id="dateRangeLabel" text="Show expenses in date range: "/>
         <TextField fx:id="lowerDateRangeText" text="04-09-2024"/>
         <TextField fx:id="upperDateRangeText" text="05-09-2024"/>
         <Button text="Show!" onAction="#onDateRangeShowButtonClick"/>
         <Label fx:id="dateRangeErrorMessage" text="" style="-fx-text-fill: red;"/>
+
     </HBox>
 
-    <!-- TableView to show the expenses -->
-    <TableView fx:id="expenseTable" prefHeight="300" prefWidth="700" maxWidth="700">
-        <columns>
-            <TableColumn fx:id="IDColumn" text="ID" prefWidth="100"/>
-            <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="150"/>
-            <TableColumn fx:id="costColumn" text="Cost" prefWidth="100"/>
-            <TableColumn fx:id="dateColumn" text="Date" prefWidth="150"/>
-            <TableColumn fx:id="categoryColumn" text="Category" prefWidth="200"/>
-        </columns>
-    </TableView>
+    <HBox spacing="10.0" alignment="CENTER">
+        <!-- TableView to show the expenses -->
+        <TableView fx:id="expenseTable" prefHeight="300" prefWidth="700" maxWidth="700">
+            <columns>
+                <TableColumn fx:id="IDColumn" text="ID" prefWidth="100"/>
+                <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="150"/>
+                <TableColumn fx:id="costColumn" text="Cost" prefWidth="100"/>
+                <TableColumn fx:id="dateColumn" text="Date" prefWidth="150"/>
+                <TableColumn fx:id="categoryColumn" text="Category" prefWidth="200"/>
+            </columns>
+        </TableView>
+
+    </HBox>
+    <HBox spacing="10.0" alignment="CENTER">
+        <Button fx:id="clear_button" text="Clear Filters!" visible="false" style="-fx-text-fill: red;" onAction="#Clear_filters"/>
+    </HBox>
+
+
 </VBox>
+

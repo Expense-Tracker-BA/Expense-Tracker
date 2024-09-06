@@ -6,17 +6,17 @@ import Backend.Service_Layer.Service_Controller;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class ExpenseTrackerController {
+    @FXML
+    private Button clear_button;
     @FXML
     private Label dateRangeLabel;
 
@@ -47,6 +47,7 @@ public class ExpenseTrackerController {
     @FXML
     private TableColumn<Expense, String> categoryColumn;
 
+
     private ObservableList<Expense> expenseList = FXCollections.observableArrayList();
 
     @FXML
@@ -58,9 +59,18 @@ public class ExpenseTrackerController {
         dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExpense_date_string()));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
 
-        // Initially empty table
+
         expenseTable.setItems(expenseList);
+        ExtractAll();
+
     }
+
+    private void ExtractAll()
+    {
+        ResponseT<List<Expense>> expensesResponse = Service_Controller.GetInstance().ExtractAll();
+        expenseList.setAll(expensesResponse.Value);
+    }
+
 
     @FXML
     protected void onDateRangeShowButtonClick() {
@@ -76,6 +86,14 @@ public class ExpenseTrackerController {
             // Populate the table with the returned expenses
             List<Expense> expenses = expensesResponse.Value;
             expenseList.setAll(expenses);  // Updates the TableView with the new data
+            clear_button.setVisible(true);
         }
+
+    }
+
+    @FXML
+    public void Clear_filters() {
+        clear_button.setVisible(false);
+        ExtractAll();
     }
 }
