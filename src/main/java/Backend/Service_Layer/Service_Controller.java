@@ -111,4 +111,15 @@ public class Service_Controller {
         }
     }
 
+    public ResponseT<List<Expense>> ExtractAll() {
+        try
+        {
+            ResponseT<List<Expense>> response=ResponseT.FromValue(Controller.getInstance().ExtractAll());
+            return response;
+        }
+        catch (Exception e)
+        {
+            return ResponseT.FromError(e.getMessage());
+        }
+    }
 }
