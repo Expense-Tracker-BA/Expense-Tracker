@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.ChoiceBox?>
 <VBox alignment="TOP_LEFT" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="Frontend.ExpenseTrackerController">
     <padding>
@@ -31,6 +32,20 @@
         <TextField fx:id="description_filter_text" text=""/>
         <Button fx:id ="desc_filter_button" text="Filter!" onAction="#on_desc_filter_Click"/>
         <Label fx:id="desc_filter_ErrorMessage" text="" style="-fx-text-fill: red;"/>
+
+    </HBox>
+    <HBox spacing="10.0" alignment="TOP_LEFT">
+
+        <Label fx:id="insert_expense" text="Insert Expense:  Date:"/>
+        <TextField fx:id="new_expense_date" text=""/>
+        <Label fx:id="new_expense_Description" text="Description:"/>
+        <TextField fx:id="new_expense_desc" text=""/>
+        <Label fx:id="new_expense_Cost" text="Cost:"/>
+        <TextField fx:id="new_expense_cost" text=""/>
+        <Label fx:id="new_expense_Category" text="Category:"/>
+        <ChoiceBox fx:id="categorychoicebox"/>
+        <Button fx:id ="insert_expense_button" text="Insert!" onAction="#on_insert_expense_Click"/>
+        <Label fx:id="insert_expense_ErrorMessage" text="" style="-fx-text-fill: red;"/>
 
     </HBox>
 

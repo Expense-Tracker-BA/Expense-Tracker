@@ -15,6 +15,19 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class ExpenseTrackerController {
+
+    @FXML
+    private Label desc_filter_ErrorMessage;
+    @FXML
+    private Label insert_expense_ErrorMessage;
+    @FXML
+    private TextField new_expense_date;
+    @FXML
+    private TextField new_expense_desc;
+    @FXML
+    private TextField new_expense_cost;
+    @FXML
+    private ChoiceBox<String> categorychoicebox;
     @FXML
     private Label totalCostLabel;
     @FXML
@@ -68,6 +81,10 @@ public class ExpenseTrackerController {
 
         expenseTable.setItems(expenseList);
         ExtractAll();
+        ObservableList<String> categories = FXCollections.observableArrayList(
+                "Clothes", "Transport", "Food", "Electronics"
+        );
+        categorychoicebox.setItems(categories);
 
     }
 
@@ -116,9 +133,9 @@ public class ExpenseTrackerController {
         ResponseT<List<Expense>> expensesResponse = Service_Controller.GetInstance().ExtractByDescription(description);
 
         if (expensesResponse.ErrorOccured()) {
-            dateRangeErrorMessage.setText(expensesResponse.ErrorMessage);
+            desc_filter_ErrorMessage.setText(expensesResponse.ErrorMessage);
         } else {
-            dateRangeErrorMessage.setText("");
+            desc_filter_ErrorMessage.setText("");
             List<Expense> expenses = expensesResponse.Value;
             expenseList.setAll(expenses);
             clear_button.setVisible(true);
@@ -127,6 +144,21 @@ public class ExpenseTrackerController {
             ResponseT<Double> total_cost=Service_Controller.GetInstance().Get_Curr_Sum();
             String formattedCost = String.format("%.3f", total_cost.Value);
             this.totalCostLabel.setText("Total Cost: $"+formattedCost);
+        }
+    }
+
+    public void on_insert_expense_Click(ActionEvent actionEvent) {
+        String description = new_expense_desc.getText();
+        String Date= new_expense_date.getText();
+        Double cost=Double.parseDouble(new_expense_cost.getText());
+        String category=categorychoicebox.getValue();
+        ResponseT<String> expensesResponse = Service_Controller.GetInstance().AddExpense(Date,description,cost,category);
+
+        if (expensesResponse.ErrorOccured()) {
+            insert_expense_ErrorMessage.setText(expensesResponse.ErrorMessage);
+        } else {
+            insert_expense_ErrorMessage.setText("");
+            ExtractAll();
         }
     }
 }
