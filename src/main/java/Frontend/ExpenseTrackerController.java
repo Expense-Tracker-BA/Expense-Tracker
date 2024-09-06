@@ -16,6 +16,10 @@ import java.util.List;
 
 public class ExpenseTrackerController {
     @FXML
+    private Button desc_filter_button;
+    @FXML
+    private TextField description_filter_text;
+    @FXML
     private Button clear_button;
     @FXML
     private Label dateRangeLabel;
@@ -94,6 +98,26 @@ public class ExpenseTrackerController {
     @FXML
     public void Clear_filters() {
         clear_button.setVisible(false);
+        description_filter_text.setDisable(false);
+        description_filter_text.setText("");
+        desc_filter_button.setDisable(false);
+
         ExtractAll();
+    }
+    @FXML
+    public void on_desc_filter_Click( ) {
+        String description = description_filter_text.getText();
+        ResponseT<List<Expense>> expensesResponse = Service_Controller.GetInstance().ExtractByDescription(description);
+
+        if (expensesResponse.ErrorOccured()) {
+            dateRangeErrorMessage.setText(expensesResponse.ErrorMessage);
+        } else {
+            dateRangeErrorMessage.setText("");
+            List<Expense> expenses = expensesResponse.Value;
+            expenseList.setAll(expenses);
+            clear_button.setVisible(true);
+            description_filter_text.setDisable(true);
+            desc_filter_button.setDisable(true);
+        }
     }
 }

@@ -97,18 +97,29 @@ public class Controller {
     }
 
     public List<Expense> ExtractByDescription(String description) throws Exception {
-        try{
-            List<Expense> test=DAL_Controller.getInstance().ExtractByDescription(description);
-            for(Expense exp : test)
-            {
-                System.out.println(exp.getDescription());
+
+        try {
+            if (this.list_of_expenses == null) {
+
+                this.list_of_expenses = DAL_Controller.getInstance().ExtractByDescription(description);
+                return this.list_of_expenses;
+
+            } else {
+                List<Expense> filtered_list = new ArrayList<>();
+                for (Expense expense : this.list_of_expenses) {
+                        if (expense.getDescription().contains(description))
+                        {
+                            filtered_list.add(expense);
+                        }
+                }
+                this.list_of_expenses=filtered_list;
+                return filtered_list;
             }
-            return DAL_Controller.getInstance().ExtractByDescription(description);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             throw e;
         }
     }
+
 
     public String UpdateExpense(Integer ID,String description, double cost, String date, String category) throws Exception {
         try{

@@ -25,6 +25,14 @@
         <Label fx:id="dateRangeErrorMessage" text="" style="-fx-text-fill: red;"/>
 
     </HBox>
+    <HBox spacing="10.0" alignment="TOP_LEFT">
+
+        <Label fx:id="filter_by_desc" text="Filter by description: "/>
+        <TextField fx:id="description_filter_text" text=""/>
+        <Button fx:id ="desc_filter_button" text="Filter!" onAction="#on_desc_filter_Click"/>
+        <Label fx:id="desc_filter_ErrorMessage" text="" style="-fx-text-fill: red;"/>
+
+    </HBox>
 
     <HBox spacing="10.0" alignment="CENTER">
         <!-- TableView to show the expenses -->
