@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Controller {
@@ -152,10 +153,21 @@ public class Controller {
         }
     }
 
-    public String RemoveExpense(Integer id) throws Exception {
+    public String RemoveExpense(String id) throws Exception {
         try{
+            String regex = "[0-9]+";
 
-            DAL_Controller.getInstance().RemoveExpense(id);
+            // Compile the ReGex
+            Pattern p = Pattern.compile(regex);
+
+
+            if (!p.matcher(id).matches())
+            {
+                throw  new Exception("please enter numeric ID only");
+            }
+
+
+            DAL_Controller.getInstance().RemoveExpense(Integer.parseInt(id));
             return "Deleted expense successfully";
         }
         catch(Exception e){

@@ -111,7 +111,7 @@ public class Service_Controller {
         }
     }
 
-    public ResponseT<String> RemoveExpense(Integer ID)
+    public ResponseT<String> RemoveExpense(String ID)
     {
         try
         {

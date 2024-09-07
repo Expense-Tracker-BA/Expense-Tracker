@@ -49,6 +49,15 @@
 
     </HBox>
 
+    <HBox spacing="10.0" alignment="TOP_LEFT">
+
+        <Label fx:id="Remove_Expense" text="Remove Expense:  ID:"/>
+        <TextField fx:id="Expense_ID_to_remove" text=""/>
+        <Button fx:id ="Remove_expense_button" text="Remove!" onAction="#on_remove_expense_Click"/>
+        <Label fx:id="remove_expense_ErrorMessage" text="" style="-fx-text-fill: red;"/>
+
+    </HBox>
+
     <HBox spacing="10.0" alignment="CENTER">
         <!-- TableView to show the expenses -->
         <TableView fx:id="expenseTable" prefHeight="300" prefWidth="700" maxWidth="700">

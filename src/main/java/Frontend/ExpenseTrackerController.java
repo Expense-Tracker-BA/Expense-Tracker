@@ -16,6 +16,10 @@ import java.util.List;
 
 public class ExpenseTrackerController {
 
+
+    public TextField Expense_ID_to_remove;
+    public Button Remove_expense_button;
+    public Label remove_expense_ErrorMessage;
     @FXML
     private Label desc_filter_ErrorMessage;
     @FXML
@@ -158,6 +162,21 @@ public class ExpenseTrackerController {
             insert_expense_ErrorMessage.setText(expensesResponse.ErrorMessage);
         } else {
             insert_expense_ErrorMessage.setText("");
+            ExtractAll();
+        }
+    }
+
+    public void on_remove_expense_Click() {
+        String ID = Expense_ID_to_remove.getText();
+
+
+
+        ResponseT<String> expensesResponse = Service_Controller.GetInstance().RemoveExpense(ID);
+
+        if (expensesResponse.ErrorOccured()) {
+            remove_expense_ErrorMessage.setText(expensesResponse.ErrorMessage);
+        } else {
+            remove_expense_ErrorMessage.setText("");
             ExtractAll();
         }
     }
