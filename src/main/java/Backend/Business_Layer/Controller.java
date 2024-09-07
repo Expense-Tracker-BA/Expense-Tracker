@@ -142,10 +142,17 @@ public class Controller {
     }
 
 
-    public String UpdateExpense(Integer ID,String description, double cost, String date, String category) throws Exception {
+    public String UpdateExpense(Integer ID,String description, String cost, String date, String category) throws Exception {
         try{
+            if (!check_if_valid_date_format(date)){
+                throw new Exception("please enter a valid date format DD-MM-YYYY");
+            }
+            if (!check_if_valid_numeric_input(cost)){
+                throw new Exception("please enter numeric cost only");
+            }
+
             String converted_date=Date_string_converter(date);
-            DAL_Controller.getInstance().UpdateExpense(ID,description, cost, converted_date, category);
+            DAL_Controller.getInstance().UpdateExpense(ID,description, Double.parseDouble(cost), converted_date, category);
             return "updated expense successfully";
         }
         catch(Exception e){
@@ -153,19 +160,18 @@ public class Controller {
         }
     }
 
+    private boolean check_if_valid_numeric_input(String input) {
+        String regex = "[0-9]+";
+        Pattern p = Pattern.compile(regex);
+        return p.matcher(input).matches();
+    }
+
     public String RemoveExpense(String id) throws Exception {
         try{
-            String regex = "[0-9]+";
-
-            // Compile the ReGex
-            Pattern p = Pattern.compile(regex);
-
-
-            if (!p.matcher(id).matches())
+            if (!check_if_valid_numeric_input(id))
             {
                 throw  new Exception("please enter numeric ID only");
             }
-
 
             DAL_Controller.getInstance().RemoveExpense(Integer.parseInt(id));
             return "Deleted expense successfully";
@@ -189,5 +195,28 @@ public class Controller {
         catch(Exception e){
             throw e;
         }
+    }
+
+    public Expense ExtractByID(String id) throws Exception {
+        try{
+            String regex = "[0-9]+";
+
+            // Compile the ReGex
+            Pattern p = Pattern.compile(regex);
+
+
+            if (!p.matcher(id).matches())
+            {
+                throw  new Exception("please enter numeric ID only");
+            }
+
+
+
+            return DAL_Controller.getInstance().ExtractByID(Integer.parseInt(id));
+        }
+        catch(Exception e){
+            throw e;
+        }
+
     }
 }

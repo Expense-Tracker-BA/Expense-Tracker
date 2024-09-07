@@ -231,4 +231,30 @@ public class DAL_Controller {
         }
 
     }
+
+    public Expense ExtractByID(int id) throws Exception {
+        try {
+            Expense expense=null;
+            String sql = "SELECT * FROM Expenses WHERE ID = ?";
+            Connection conn = DriverManager.getConnection(connection_string);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                expense= new Expense(rs.getInt("ID"),rs.getString("description"), rs.getDouble("Cost"),
+                        rs.getString("Date"), rs.getString("Category"),true);
+            }
+            else
+            {
+                throw new Exception("no expense with such ID!");
+            }
+            pstmt.close();
+            conn.close();
+            return expense;
+        }
+        catch(Exception e){
+            throw e;
+        }
+
+    }
 }

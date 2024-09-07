@@ -15,7 +15,7 @@ public class ExpenseTrackerApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(ExpenseTrackerApplication.class.getResource("ExpenseTracker-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1200, 700);
+        Scene scene = new Scene(fxmlLoader.load(), 1500, 700);
         stage.setTitle("Expense Tracker!");
         stage.setScene(scene);
         stage.show();
