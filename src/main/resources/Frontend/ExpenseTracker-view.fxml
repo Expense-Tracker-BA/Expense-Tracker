@@ -22,7 +22,7 @@
         <Label fx:id="dateRangeLabel" text="Show expenses in date range: "/>
         <TextField fx:id="lowerDateRangeText" text="04-09-2024"/>
         <TextField fx:id="upperDateRangeText" text="05-09-2024"/>
-        <Button text="Show!" onAction="#onDateRangeShowButtonClick"/>
+        <Button fx:id ="date_filter_button" text="Show!" onAction="#onDateRangeShowButtonClick"/>
         <Label fx:id="dateRangeErrorMessage" text="" style="-fx-text-fill: red;"/>
 
     </HBox>
