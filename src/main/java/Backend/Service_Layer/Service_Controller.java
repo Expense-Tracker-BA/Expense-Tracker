@@ -98,7 +98,7 @@ public class Service_Controller {
         }
     }
 
-    public ResponseT<String> UpdateExpense(Integer ID,String description,double cost,String date, String category)
+    public ResponseT<String> UpdateExpense(Integer ID,String description,String cost,String date, String category)
     {
         try
         {
@@ -111,7 +111,7 @@ public class Service_Controller {
         }
     }
 
-    public ResponseT<String> RemoveExpense(Integer ID)
+    public ResponseT<String> RemoveExpense(String ID)
     {
         try
         {
@@ -128,6 +128,18 @@ public class Service_Controller {
         try
         {
             ResponseT<List<Expense>> response=ResponseT.FromValue(Controller.getInstance().ExtractAll());
+            return response;
+        }
+        catch (Exception e)
+        {
+            return ResponseT.FromError(e.getMessage());
+        }
+    }
+
+    public ResponseT<Expense> ExtractByID(String id) {
+        try
+        {
+            ResponseT<Expense> response=ResponseT.FromValue(Controller.getInstance().ExtractByID(id));
             return response;
         }
         catch (Exception e)

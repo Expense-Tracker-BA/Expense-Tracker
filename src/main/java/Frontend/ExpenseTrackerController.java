@@ -16,6 +16,23 @@ import java.util.List;
 
 public class ExpenseTrackerController {
 
+
+    public TextField Expense_ID_to_remove;
+    public Button Remove_expense_button;
+    public Label remove_expense_ErrorMessage;
+    public TextField expense_to_update_id;
+    public Label expense_to_update_date_label;
+    public TextField expense_to_update_date_text;
+    public Label expense_to_update_Description_label;
+    public TextField expense_to_update_Description_text;
+    public Label expense_to_update_Cost_label;
+    public TextField expense_to_update_cost_text;
+    public Label expense_to_update_category_label;
+    public ChoiceBox<String> categorychoicebox_update_expense;
+    public Button update_expense_button;
+    public Label update_expense_ErrorMessage;
+    public Button show_expense_to_update_button;
+    public Label show_expense_to_update_message;
     @FXML
     private Label desc_filter_ErrorMessage;
     @FXML
@@ -85,6 +102,7 @@ public class ExpenseTrackerController {
                 "Clothes", "Transport", "Food", "Electronics"
         );
         categorychoicebox.setItems(categories);
+        categorychoicebox_update_expense.setItems(categories);
 
     }
 
@@ -96,6 +114,30 @@ public class ExpenseTrackerController {
         String formattedCost = String.format("%.3f", total_cost.Value);
         this.totalCostLabel.setText("Total Cost: $"+formattedCost);
 
+
+
+        hide_update_expense_fields();
+
+
+
+
+
+    }
+
+    private void hide_update_expense_fields() {
+        expense_to_update_date_label.setVisible(false);
+        expense_to_update_date_text.setVisible(false);
+        expense_to_update_category_label.setVisible(false);
+        categorychoicebox_update_expense.setVisible(false);
+        update_expense_button.setVisible(false);
+        update_expense_ErrorMessage.setVisible(false);
+        expense_to_update_Cost_label.setVisible(false);
+        expense_to_update_cost_text.setVisible(false);
+        expense_to_update_Description_label.setVisible(false);
+        expense_to_update_Description_text.setVisible(false);
+        show_expense_to_update_message.setVisible(true);
+        show_expense_to_update_button.setVisible(true);
+        expense_to_update_id.setText("");
     }
 
 
@@ -109,13 +151,24 @@ public class ExpenseTrackerController {
         if (expensesResponse.ErrorOccured()) {
             dateRangeErrorMessage.setText(expensesResponse.ErrorMessage);
         } else {
-            dateRangeErrorMessage.setText("");
+            clear_all_messages();
             // Populate the table with the returned expenses
             List<Expense> expenses = expensesResponse.Value;
             expenseList.setAll(expenses);  // Updates the TableView with the new data
             clear_button.setVisible(true);
+            hide_update_expense_fields();
+
         }
 
+    }
+
+    private void clear_all_messages() {
+        show_expense_to_update_message.setText("");
+        update_expense_ErrorMessage.setText("");
+        remove_expense_ErrorMessage.setText("");
+        dateRangeErrorMessage.setText("");
+        insert_expense_ErrorMessage.setText("");
+        desc_filter_ErrorMessage.setText("");
     }
 
     @FXML
@@ -135,7 +188,7 @@ public class ExpenseTrackerController {
         if (expensesResponse.ErrorOccured()) {
             desc_filter_ErrorMessage.setText(expensesResponse.ErrorMessage);
         } else {
-            desc_filter_ErrorMessage.setText("");
+            clear_all_messages();
             List<Expense> expenses = expensesResponse.Value;
             expenseList.setAll(expenses);
             clear_button.setVisible(true);
@@ -144,6 +197,7 @@ public class ExpenseTrackerController {
             ResponseT<Double> total_cost=Service_Controller.GetInstance().Get_Curr_Sum();
             String formattedCost = String.format("%.3f", total_cost.Value);
             this.totalCostLabel.setText("Total Cost: $"+formattedCost);
+            hide_update_expense_fields();
         }
     }
 
@@ -157,8 +211,76 @@ public class ExpenseTrackerController {
         if (expensesResponse.ErrorOccured()) {
             insert_expense_ErrorMessage.setText(expensesResponse.ErrorMessage);
         } else {
-            insert_expense_ErrorMessage.setText("");
+            clear_all_messages();
             ExtractAll();
+            hide_update_expense_fields();
         }
+    }
+
+    public void on_remove_expense_Click() {
+        String ID = Expense_ID_to_remove.getText();
+
+
+
+        ResponseT<String> expensesResponse = Service_Controller.GetInstance().RemoveExpense(ID);
+
+        if (expensesResponse.ErrorOccured()) {
+            remove_expense_ErrorMessage.setText(expensesResponse.ErrorMessage);
+        } else {
+            clear_all_messages();
+            ExtractAll();
+            hide_update_expense_fields();
+        }
+    }
+
+    public void on_update_expense_Click() {
+        ResponseT<String> expensesResponse = Service_Controller.GetInstance().UpdateExpense(Integer.parseInt(expense_to_update_id.getText()), expense_to_update_Description_text.getText(), expense_to_update_cost_text.getText(), expense_to_update_date_text.getText(), categorychoicebox_update_expense.getValue());
+
+        if (expensesResponse.ErrorOccured()) {
+            update_expense_ErrorMessage.setText(expensesResponse.ErrorMessage);
+        } else {
+            clear_all_messages();
+            ExtractAll();
+            hide_update_expense_fields();
+
+
+        }
+    }
+
+    public void on_show_expense_to_update_Click( ) {
+        String ID=expense_to_update_id.getText();
+        ResponseT<Expense> expensesResponse = Service_Controller.GetInstance().ExtractByID(ID);
+
+        if (expensesResponse.ErrorOccured()) {
+            show_expense_to_update_message.setText(expensesResponse.ErrorMessage);
+        } else {
+
+            show_expense_to_update_message.setVisible(false);
+            show_expense_to_update_button.setVisible(false);
+
+
+            expense_to_update_date_label.setVisible(true);
+            expense_to_update_date_text.setVisible(true);
+            expense_to_update_category_label.setVisible(true);
+            categorychoicebox_update_expense.setVisible(true);
+            update_expense_button.setVisible(true);
+            update_expense_ErrorMessage.setVisible(true);
+            expense_to_update_Cost_label.setVisible(true);
+            expense_to_update_cost_text.setVisible(true);
+            expense_to_update_Description_label.setVisible(true);
+            expense_to_update_Description_text.setVisible(true);
+            expense_to_update_date_text.setText(expensesResponse.Value.getExpense_date_string());
+            categorychoicebox_update_expense.setValue(expensesResponse.Value.getCategory());
+            expense_to_update_cost_text.setText(Double.toString(expensesResponse.Value.getCost()));
+            expense_to_update_Description_text.setText(expensesResponse.Value.getDescription());
+
+
+
+
+
+
+
+        }
+
     }
 }

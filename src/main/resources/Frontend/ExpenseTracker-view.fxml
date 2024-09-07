@@ -49,6 +49,33 @@
 
     </HBox>
 
+    <HBox spacing="10.0">
+
+        <Label fx:id="Remove_Expense" text="Remove Expense:  ID:"/>
+        <TextField fx:id="Expense_ID_to_remove" text=""/>
+        <Button fx:id ="Remove_expense_button" text="Remove!" onAction="#on_remove_expense_Click"/>
+        <Label fx:id="remove_expense_ErrorMessage" text="" style="-fx-text-fill: red;"/>
+
+    </HBox>
+    <HBox spacing="10.0" alignment="TOP_LEFT">
+
+        <Label fx:id="update_expense" text="Update Expense:  ID:"/>
+        <TextField fx:id="expense_to_update_id" text=""/>
+        <Button fx:id ="show_expense_to_update_button" text="Show!" onAction="#on_show_expense_to_update_Click"/>
+        <Label fx:id="show_expense_to_update_message" text="" style="-fx-text-fill: red;"/>
+        <Label fx:id="expense_to_update_date_label" text="Date:"/>
+        <TextField fx:id="expense_to_update_date_text" text=""/>
+        <Label fx:id="expense_to_update_Description_label" text="Description:"/>
+        <TextField fx:id="expense_to_update_Description_text" text=""/>
+        <Label fx:id="expense_to_update_Cost_label" text="Cost:"/>
+        <TextField fx:id="expense_to_update_cost_text" text=""/>
+        <Label fx:id="expense_to_update_category_label" text="Category:"/>
+        <ChoiceBox fx:id="categorychoicebox_update_expense"/>
+        <Button fx:id ="update_expense_button" text="Update!" onAction="#on_update_expense_Click"/>
+        <Label fx:id="update_expense_ErrorMessage" text="" style="-fx-text-fill: red;"/>
+
+    </HBox>
+
     <HBox spacing="10.0" alignment="CENTER">
         <!-- TableView to show the expenses -->
         <TableView fx:id="expenseTable" prefHeight="300" prefWidth="700" maxWidth="700">
