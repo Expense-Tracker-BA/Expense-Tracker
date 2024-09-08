@@ -73,18 +73,61 @@ public class Controller {
     }
 
     public List<Expense> ExtractInDateRange(String lower_date, String upper_date) throws Exception {
+        String converted_lower_Date = "";
+        String converted_upper_Date = "";
+
         try{
-            if (check_if_valid_date_format(lower_date) && check_if_valid_date_format(upper_date) ) {
-                String converted_lower_Date = Date_string_converter(lower_date);
-                String converted_upper_Date = Date_string_converter(upper_date);
-                return DAL_Controller.getInstance().GetExpenseInDateRange(converted_lower_Date, converted_upper_Date);
+            if (check_if_valid_date_format(lower_date) && check_if_valid_date_format(upper_date)) {
+                converted_lower_Date = Date_string_converter(lower_date);
+                converted_upper_Date = Date_string_converter(upper_date);
             }
-            else
-            {
+            else{
                 throw new Exception("please enter a valid date format DD-MM-YYYY");
+            }
+
+            if (this.list_of_expenses == null) {
+                this.list_of_expenses = DAL_Controller.getInstance().GetExpenseInDateRange(converted_lower_Date, converted_upper_Date);
+                Update_total_cost();
+                return this.list_of_expenses;
+
+            } else {
+                List<Expense> filtered_list = new ArrayList<>();
+                LocalDate upperDate = ConvertToLocalDate(upper_date);
+                LocalDate lowerDate = ConvertToLocalDate(lower_date);
+                for (Expense expense : this.list_of_expenses) {
+                    if ((expense.getExpense_date().isAfter(lowerDate) || (expense.getExpense_date().isEqual(lowerDate))) &&
+                            (expense.getExpense_date().isBefore(upperDate) || expense.getExpense_date().isEqual(upperDate)))
+                    {
+                        filtered_list.add(expense);
+                    }
+                }
+
+                this.list_of_expenses=filtered_list;
+                Update_total_cost();
+                return filtered_list;
             }
         }
         catch(Exception e){
+            throw e;
+        }
+    }
+
+    private LocalDate ConvertToLocalDate(String date){
+        // Define the date format
+
+        DateTimeFormatter output = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter input = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        try {
+            // Format the string to a LocalDate
+
+            LocalDate inputnewDate = LocalDate.parse(date, input);
+            String desired_date_format=inputnewDate.format(output);
+            LocalDate outputdate=LocalDate.parse(desired_date_format, output);
+
+            return outputdate;
+        }
+        catch (Exception e) {
             throw e;
         }
     }

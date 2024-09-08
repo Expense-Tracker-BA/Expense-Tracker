@@ -33,6 +33,7 @@ public class ExpenseTrackerController {
     public Label update_expense_ErrorMessage;
     public Button show_expense_to_update_button;
     public Label show_expense_to_update_message;
+    public Button date_filter_button;
     @FXML
     private Label desc_filter_ErrorMessage;
     @FXML
@@ -156,8 +157,13 @@ public class ExpenseTrackerController {
             List<Expense> expenses = expensesResponse.Value;
             expenseList.setAll(expenses);  // Updates the TableView with the new data
             clear_button.setVisible(true);
+            lowerDateRangeText.setDisable(true);
+            upperDateRangeText.setDisable(true);
+            date_filter_button.setDisable(true);
+            ResponseT<Double> total_cost=Service_Controller.GetInstance().Get_Curr_Sum();
+            String formattedCost = String.format("%.3f", total_cost.Value);
+            this.totalCostLabel.setText("Total Cost: $"+formattedCost);
             hide_update_expense_fields();
-
         }
 
     }
@@ -177,7 +183,9 @@ public class ExpenseTrackerController {
         description_filter_text.setDisable(false);
         description_filter_text.setText("");
         desc_filter_button.setDisable(false);
-
+        lowerDateRangeText.setDisable(false);
+        upperDateRangeText.setDisable(false);
+        date_filter_button.setDisable(false);
         ExtractAll();
     }
     @FXML
