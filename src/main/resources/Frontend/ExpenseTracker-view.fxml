@@ -10,6 +10,8 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ListView?>
 <VBox alignment="TOP_LEFT" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="Frontend.ExpenseTrackerController">
     <padding>
@@ -26,6 +28,22 @@
         <Label fx:id="dateRangeErrorMessage" text="" style="-fx-text-fill: red;"/>
 
     </HBox>
+
+    <HBox spacing="10.0" alignment="TOP_LEFT">
+        <Label fx:id="costRangeLabel" text="Show expenses in cost range: "/>
+        <TextField fx:id="lowerCostRangeText" text="0"/>
+        <TextField fx:id="upperCostRangeText" text="25.7"/>
+        <Button fx:id ="cost_filter_button" text="Show!" onAction="#onCostRangeShowButtonClick"/>
+        <Label fx:id="costRangeErrorMessage" text="" style="-fx-text-fill: red;"/>
+    </HBox>
+
+    <HBox spacing="10.0" alignment="TOP_LEFT">
+        <Label fx:id="CategoryLabel" text="Show expenses in categories: "/>
+        <ListView fx:id="categorySelectListView" prefWidth="200" prefHeight="200"/>
+        <Button fx:id ="category_filter_button" text="Show!" onAction="#onCategoryShowButtonClick"/>
+        <Label fx:id="categoryErrorMessage" text="" style="-fx-text-fill: red;"/>
+    </HBox>
+
     <HBox spacing="10.0" alignment="TOP_LEFT">
 
         <Label fx:id="filter_by_desc" text="Filter by description: "/>
@@ -34,6 +52,7 @@
         <Label fx:id="desc_filter_ErrorMessage" text="" style="-fx-text-fill: red;"/>
 
     </HBox>
+
     <HBox spacing="10.0" alignment="TOP_LEFT">
 
         <Label fx:id="insert_expense" text="Insert Expense:  Date:"/>

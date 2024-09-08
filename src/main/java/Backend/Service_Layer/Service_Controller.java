@@ -47,7 +47,7 @@ public class Service_Controller {
         }
     }
 
-    public ResponseT<List<Expense>> ExtractByCost(double lower_cost, double upper_cost){
+    public ResponseT<List<Expense>> ExtractByCost(String lower_cost, String upper_cost){
         try
         {
             ResponseT<List<Expense>> response =ResponseT.FromValue(Controller.getInstance().ExtractByCost(lower_cost, upper_cost));

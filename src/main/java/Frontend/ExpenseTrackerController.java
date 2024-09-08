@@ -12,7 +12,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javafx.util.Callback;
 
 public class ExpenseTrackerController {
 
@@ -34,6 +38,16 @@ public class ExpenseTrackerController {
     public Button show_expense_to_update_button;
     public Label show_expense_to_update_message;
     public Button date_filter_button;
+    public Label costRangeLabel;
+    public TextField lowerCostRangeText;
+    public TextField upperCostRangeText;
+    public Button cost_filter_button;
+    public Label costRangeErrorMessage;
+    public Label CategoryLabel;
+    public Button category_filter_button;
+    public Label categoryErrorMessage;
+    public ListView<CheckBox> categorySelectListView;
+    private ObservableList<CheckBox> checkBoxItems = FXCollections.observableArrayList();
     @FXML
     private Label desc_filter_ErrorMessage;
     @FXML
@@ -105,7 +119,33 @@ public class ExpenseTrackerController {
         categorychoicebox.setItems(categories);
         categorychoicebox_update_expense.setItems(categories);
 
+        checkBoxItems.addAll(
+                new CheckBox("Clothes"),
+                new CheckBox("Transport"),
+                new CheckBox("Food"),
+                new CheckBox("Electronics")
+        );
+
+        categorySelectListView.setItems(checkBoxItems);
+        // Customize the ListView to properly handle CheckBoxes
+        categorySelectListView.setCellFactory(new Callback<ListView<CheckBox>, ListCell<CheckBox>>() {
+            @Override
+            public ListCell<CheckBox> call(ListView<CheckBox> param) {
+                return new ListCell<CheckBox>() {
+                    @Override
+                    protected void updateItem(CheckBox item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item != null) {
+                            setGraphic(item);
+                        } else {
+                            setGraphic(null);
+                        }
+                    }
+                };
+            }
+        });
     }
+
 
     private void ExtractAll()
     {
@@ -114,15 +154,7 @@ public class ExpenseTrackerController {
         ResponseT<Double> total_cost=Service_Controller.GetInstance().Get_Curr_Sum();
         String formattedCost = String.format("%.3f", total_cost.Value);
         this.totalCostLabel.setText("Total Cost: $"+formattedCost);
-
-
-
         hide_update_expense_fields();
-
-
-
-
-
     }
 
     private void hide_update_expense_fields() {
@@ -165,7 +197,6 @@ public class ExpenseTrackerController {
             this.totalCostLabel.setText("Total Cost: $"+formattedCost);
             hide_update_expense_fields();
         }
-
     }
 
     private void clear_all_messages() {
@@ -175,6 +206,8 @@ public class ExpenseTrackerController {
         dateRangeErrorMessage.setText("");
         insert_expense_ErrorMessage.setText("");
         desc_filter_ErrorMessage.setText("");
+        costRangeErrorMessage.setText("");
+        categoryErrorMessage.setText("");
     }
 
     @FXML
@@ -186,6 +219,13 @@ public class ExpenseTrackerController {
         lowerDateRangeText.setDisable(false);
         upperDateRangeText.setDisable(false);
         date_filter_button.setDisable(false);
+        lowerCostRangeText.setDisable(false);
+        upperCostRangeText.setDisable(false);
+        cost_filter_button.setDisable(false);
+        categorySelectListView.getItems().forEach(checkBox -> {
+            checkBox.setDisable(false);
+        });
+        category_filter_button.setDisable(false);
         ExtractAll();
     }
     @FXML
@@ -266,7 +306,6 @@ public class ExpenseTrackerController {
             show_expense_to_update_message.setVisible(false);
             show_expense_to_update_button.setVisible(false);
 
-
             expense_to_update_date_label.setVisible(true);
             expense_to_update_date_text.setVisible(true);
             expense_to_update_category_label.setVisible(true);
@@ -281,14 +320,68 @@ public class ExpenseTrackerController {
             categorychoicebox_update_expense.setValue(expensesResponse.Value.getCategory());
             expense_to_update_cost_text.setText(Double.toString(expensesResponse.Value.getCost()));
             expense_to_update_Description_text.setText(expensesResponse.Value.getDescription());
-
-
-
-
-
-
-
         }
 
+    }
+
+    public void onCostRangeShowButtonClick() {
+        String lowerCost = lowerCostRangeText.getText();
+        String upperCost = upperCostRangeText.getText();
+
+        ResponseT<List<Expense>> expensesResponse = Service_Controller.GetInstance().ExtractByCost(lowerCost, upperCost);
+
+        if (expensesResponse.ErrorOccured()) {
+            costRangeErrorMessage.setText(expensesResponse.ErrorMessage);
+        } else {
+            clear_all_messages();
+            // Populate the table with the returned expenses
+            List<Expense> expenses = expensesResponse.Value;
+            expenseList.setAll(expenses);  // Updates the TableView with the new data
+            clear_button.setVisible(true);
+            lowerCostRangeText.setDisable(true);
+            upperCostRangeText.setDisable(true);
+            cost_filter_button.setDisable(true);
+            ResponseT<Double> total_cost=Service_Controller.GetInstance().Get_Curr_Sum();
+            String formattedCost = String.format("%.3f", total_cost.Value);
+            this.totalCostLabel.setText("Total Cost: $"+formattedCost);
+            hide_update_expense_fields();
+        }
+    }
+
+    public void onCategoryShowButtonClick() {
+        AtomicInteger allBoxesChecked_counter = new AtomicInteger(0);
+        List<String> selectedCategories = new ArrayList<>();
+        categorySelectListView.getItems().forEach(checkBox -> {
+            if (checkBox.isSelected()) {
+                selectedCategories.add(checkBox.getText());
+            }
+        });
+
+        ResponseT<List<Expense>> expensesResponse = Service_Controller.GetInstance().ExtractByCategory(selectedCategories);
+
+        if (expensesResponse.ErrorOccured()) {
+            categoryErrorMessage.setText(expensesResponse.ErrorMessage);
+        } else {
+            clear_all_messages();
+            // Populate the table with the returned expenses
+            List<Expense> expenses = expensesResponse.Value;
+            expenseList.setAll(expenses);  // Updates the TableView with the new data
+            clear_button.setVisible(true);
+            categorySelectListView.getItems().forEach(checkBox -> {
+                if (checkBox.isSelected()) {
+                    allBoxesChecked_counter.incrementAndGet();
+                }
+                else{
+                    checkBox.setDisable(true);
+                }
+            });
+//            if(allBoxesChecked_counter.get() == categorySelectListView.getItems().size()){
+//                category_filter_button.setDisable(true);
+//            }
+            ResponseT<Double> total_cost=Service_Controller.GetInstance().Get_Curr_Sum();
+            String formattedCost = String.format("%.3f", total_cost.Value);
+            this.totalCostLabel.setText("Total Cost: $"+formattedCost);
+            hide_update_expense_fields();
+        }
     }
 }
