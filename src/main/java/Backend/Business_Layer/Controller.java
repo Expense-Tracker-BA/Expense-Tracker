@@ -42,10 +42,28 @@ public class Controller {
     }
 
 
-    public List<Expense> ExtractByCategory(List<String> categories) throws SQLException {
+    public List<Expense> ExtractByCategory(List<String> categories) throws Exception {
+        if(categories == null || categories.isEmpty()){
+            throw new Exception("Please select at least one category!");
+        }
         try{
-            //TODO:: a drop list in the frontend
-            return DAL_Controller.getInstance().GetExpenseByCategory(categories);
+            if (this.list_of_expenses == null) {
+                this.list_of_expenses = DAL_Controller.getInstance().GetExpenseByCategory(categories);
+                Update_total_cost();
+                return this.list_of_expenses;
+            } else {
+                List<Expense> filtered_list = new ArrayList<>();
+                for (Expense expense : this.list_of_expenses) {
+                    if (categories.contains(expense.getCategory()))
+                    {
+                        filtered_list.add(expense);
+                    }
+                }
+
+                this.list_of_expenses=filtered_list;
+                Update_total_cost();
+                return filtered_list;
+            }
         }
         catch(Exception e){
             throw e;
