@@ -34,6 +34,11 @@ public class ExpenseTrackerController {
     public Button show_expense_to_update_button;
     public Label show_expense_to_update_message;
     public Button date_filter_button;
+    public Label costRangeLabel;
+    public TextField lowerCostRangeText;
+    public TextField upperCostRangeText;
+    public Button cost_filter_button;
+    public Label costRangeErrorMessage;
     @FXML
     private Label desc_filter_ErrorMessage;
     @FXML
@@ -114,15 +119,7 @@ public class ExpenseTrackerController {
         ResponseT<Double> total_cost=Service_Controller.GetInstance().Get_Curr_Sum();
         String formattedCost = String.format("%.3f", total_cost.Value);
         this.totalCostLabel.setText("Total Cost: $"+formattedCost);
-
-
-
         hide_update_expense_fields();
-
-
-
-
-
     }
 
     private void hide_update_expense_fields() {
@@ -165,7 +162,6 @@ public class ExpenseTrackerController {
             this.totalCostLabel.setText("Total Cost: $"+formattedCost);
             hide_update_expense_fields();
         }
-
     }
 
     private void clear_all_messages() {
@@ -175,6 +171,7 @@ public class ExpenseTrackerController {
         dateRangeErrorMessage.setText("");
         insert_expense_ErrorMessage.setText("");
         desc_filter_ErrorMessage.setText("");
+        costRangeErrorMessage.setText("");
     }
 
     @FXML
@@ -186,6 +183,9 @@ public class ExpenseTrackerController {
         lowerDateRangeText.setDisable(false);
         upperDateRangeText.setDisable(false);
         date_filter_button.setDisable(false);
+        lowerCostRangeText.setDisable(false);
+        upperCostRangeText.setDisable(false);
+        cost_filter_button.setDisable(false);
         ExtractAll();
     }
     @FXML
@@ -266,7 +266,6 @@ public class ExpenseTrackerController {
             show_expense_to_update_message.setVisible(false);
             show_expense_to_update_button.setVisible(false);
 
-
             expense_to_update_date_label.setVisible(true);
             expense_to_update_date_text.setVisible(true);
             expense_to_update_category_label.setVisible(true);
@@ -281,14 +280,31 @@ public class ExpenseTrackerController {
             categorychoicebox_update_expense.setValue(expensesResponse.Value.getCategory());
             expense_to_update_cost_text.setText(Double.toString(expensesResponse.Value.getCost()));
             expense_to_update_Description_text.setText(expensesResponse.Value.getDescription());
-
-
-
-
-
-
-
         }
 
+    }
+
+    public void onCostRangeShowButtonClick() {
+        String lowerCost = lowerCostRangeText.getText();
+        String upperCost = upperCostRangeText.getText();
+
+        ResponseT<List<Expense>> expensesResponse = Service_Controller.GetInstance().ExtractByCost(lowerCost, upperCost);
+
+        if (expensesResponse.ErrorOccured()) {
+            costRangeErrorMessage.setText(expensesResponse.ErrorMessage);
+        } else {
+            clear_all_messages();
+            // Populate the table with the returned expenses
+            List<Expense> expenses = expensesResponse.Value;
+            expenseList.setAll(expenses);  // Updates the TableView with the new data
+            clear_button.setVisible(true);
+            lowerCostRangeText.setDisable(true);
+            upperCostRangeText.setDisable(true);
+            cost_filter_button.setDisable(true);
+            ResponseT<Double> total_cost=Service_Controller.GetInstance().Get_Curr_Sum();
+            String formattedCost = String.format("%.3f", total_cost.Value);
+            this.totalCostLabel.setText("Total Cost: $"+formattedCost);
+            hide_update_expense_fields();
+        }
     }
 }

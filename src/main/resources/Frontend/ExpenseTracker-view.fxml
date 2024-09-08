@@ -26,6 +26,17 @@
         <Label fx:id="dateRangeErrorMessage" text="" style="-fx-text-fill: red;"/>
 
     </HBox>
+
+    <HBox spacing="10.0" alignment="TOP_LEFT">
+
+        <Label fx:id="costRangeLabel" text="Show expenses in cost range: "/>
+        <TextField fx:id="lowerCostRangeText" text="0"/>
+        <TextField fx:id="upperCostRangeText" text="25.7"/>
+        <Button fx:id ="cost_filter_button" text="Show!" onAction="#onCostRangeShowButtonClick"/>
+        <Label fx:id="costRangeErrorMessage" text="" style="-fx-text-fill: red;"/>
+
+    </HBox>
+
     <HBox spacing="10.0" alignment="TOP_LEFT">
 
         <Label fx:id="filter_by_desc" text="Filter by description: "/>

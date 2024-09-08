@@ -52,13 +52,47 @@ public class Controller {
         }
     }
 
-    public List<Expense> ExtractByCost(double lower_cost, double upper_cost) throws Exception {
+    private Double convertToDouble(String str) {
+        try {
+            return Double.parseDouble(str);
+        } catch (NumberFormatException e) {
+            throw e;
+        }
+    }
+
+    public List<Expense> ExtractByCost(String lower_cost, String upper_cost) throws Exception {
+        double lowerCost = 0;
+        double upperCost = 0;
+        try {
+            lowerCost = convertToDouble(lower_cost);
+            upperCost = convertToDouble(upper_cost);
+        }
+        catch(Exception e){
+            throw new Exception("You should only enter numeric values!");
+        }
+
+        if(!(lowerCost <= upperCost)) {
+            throw new Exception("lower cost can't be larger that the upper cost");
+        }
+
         try{
-            if(lower_cost <= upper_cost) {
-                return DAL_Controller.getInstance().GetExpenseByCost(lower_cost, upper_cost);
-            }
-            else{
-                throw new Exception("lower cost can't be larger that the upper cost");
+            if (this.list_of_expenses == null) {
+                this.list_of_expenses = DAL_Controller.getInstance().GetExpenseByCost(lowerCost, upperCost);
+                Update_total_cost();
+                return this.list_of_expenses;
+
+            } else {
+                List<Expense> filtered_list = new ArrayList<>();
+                for (Expense expense : this.list_of_expenses) {
+                    if (expense.getCost() >= lowerCost && expense.getCost() <= upperCost)
+                    {
+                        filtered_list.add(expense);
+                    }
+                }
+
+                this.list_of_expenses=filtered_list;
+                Update_total_cost();
+                return filtered_list;
             }
         }
         catch(Exception e){
