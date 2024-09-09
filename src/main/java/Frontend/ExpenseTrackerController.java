@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -175,7 +176,7 @@ public class ExpenseTrackerController {
     private void update_bar_chart(List<Expense> expenses) {
         String cost = "Cost";
         String Date = "Date";
-
+        //Getting the data into the dictionary:
         Map<String, Double> dateToTotalPriceMap = new HashMap<>();
         for(Expense e : expenses){
             if(!dateToTotalPriceMap.containsKey(e.getExpense_date_string())){
@@ -187,10 +188,25 @@ public class ExpenseTrackerController {
             }
         }
 
+        //Sorting the data from the lowest date first:
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        Map<String, Double> sortedMap = new LinkedHashMap<>();
+        dateToTotalPriceMap.entrySet()
+                .stream()
+                .sorted((entry1, entry2) -> {
+                    // Parse the date strings to LocalDate objects
+                    LocalDate date1 = LocalDate.parse(entry1.getKey(), formatter);
+                    LocalDate date2 = LocalDate.parse(entry2.getKey(), formatter);
+                    // Compare dates
+                    return date1.compareTo(date2);
+                })
+                .forEachOrdered(entry -> sortedMap.put(entry.getKey(), entry.getValue()));
+
+        //Creating the bar chart with the updated data:
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Expenses");
 
-        for (Map.Entry<String, Double> entry : dateToTotalPriceMap.entrySet()) {
+        for (Map.Entry<String, Double> entry : sortedMap.entrySet()) {
             series.getData().add(new XYChart.Data<>(entry.getKey(),entry.getValue()));
         }
 
@@ -390,8 +406,6 @@ public class ExpenseTrackerController {
             clear_all_messages();
             ExtractAll();
             hide_update_expense_fields();
-
-
         }
     }
 
