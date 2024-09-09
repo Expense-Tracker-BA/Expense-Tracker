@@ -8,6 +8,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -103,6 +106,14 @@ public class ExpenseTrackerController {
     @FXML
     private TableColumn<Expense, String> categoryColumn;
 
+    @FXML
+    private BarChart<String, Number> expenseBarChart;
+
+    @FXML
+    private CategoryAxis dateAxis;
+
+    @FXML
+    private NumberAxis priceAxis;
 
     private ObservableList<Expense> expenseList = FXCollections.observableArrayList();
 

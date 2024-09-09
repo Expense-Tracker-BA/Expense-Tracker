@@ -14,6 +14,9 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ChoiceBox?>
 
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <TabPane xmlns:fx="http://javafx.com/fxml" fx:controller="Frontend.ExpenseTrackerController">
     <!-- Tab for filters and controls -->
     <Tab text="Controls">
@@ -120,6 +123,24 @@
             </padding>
             <VBox fx:id="percentageLabels" spacing="10.0" alignment="TOP_LEFT"/>
             <PieChart fx:id="expensePieChart" prefWidth="600" prefHeight="400"/>
+        </VBox>
+    </Tab>
+
+    <Tab text="Bar Chart">
+        <VBox alignment="CENTER" spacing="20.0">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </padding>
+            <!-- Create Bar Chart -->
+            <BarChart fx:id="expenseBarChart" prefWidth="600" prefHeight="400">
+                <!-- Define X and Y axes -->
+                <xAxis>
+                    <CategoryAxis fx:id="dateAxis" label="Date"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis fx:id="priceAxis" label="Price"/>
+                </yAxis>
+            </BarChart>
         </VBox>
     </Tab>
 
