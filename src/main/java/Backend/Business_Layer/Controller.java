@@ -256,9 +256,15 @@ public class Controller {
     }
 
     private boolean check_if_valid_numeric_input(String input) {
-        String regex = "[0-9]+";
-        Pattern p = Pattern.compile(regex);
-        return p.matcher(input).matches();
+        try
+        {
+            double d =Double.parseDouble(input);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
     public String RemoveExpense(String id) throws Exception {
