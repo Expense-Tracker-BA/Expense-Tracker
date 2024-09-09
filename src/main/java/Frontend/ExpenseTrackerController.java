@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 public class ExpenseTrackerController {
@@ -47,6 +49,9 @@ public class ExpenseTrackerController {
     public Button category_filter_button;
     public Label categoryErrorMessage;
     public ListView<CheckBox> categorySelectListView;
+    public PieChart expensePieChart;
+    public VBox percentageLabels;
+
     private ObservableList<CheckBox> checkBoxItems = FXCollections.observableArrayList();
     @FXML
     private Label desc_filter_ErrorMessage;
@@ -104,6 +109,7 @@ public class ExpenseTrackerController {
     @FXML
     public void initialize() {
         // Set up the columns in the table
+
         IDColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         costColumn.setCellValueFactory(new PropertyValueFactory<>("cost"));
@@ -155,6 +161,67 @@ public class ExpenseTrackerController {
         String formattedCost = String.format("%.3f", total_cost.Value);
         this.totalCostLabel.setText("Total Cost: $"+formattedCost);
         hide_update_expense_fields();
+        update_pie_chart(expensesResponse.Value);
+
+    }
+
+    private void update_pie_chart(List<Expense> expenses) {
+        String Clothes="Clothes";
+        String Food="Food";
+        String Transport="Transport";
+        String Electronics="Electronics";
+        double Clothes_count=0;
+        double Food_count=0;
+        double Transport_count=0;
+        double Electronics_count=0;
+        double total=expenses.size();
+        for(Expense e:expenses)
+        {
+            switch (e.getCategory()){
+                case "Clothes": Clothes_count=Clothes_count+1;break;
+                case "Food": Food_count=Food_count+1; break;
+                case "Transport": Transport_count=Transport_count+1; break;
+                case "Electronics": Electronics_count=Electronics_count+1;break;
+            }
+        }
+        percentageLabels.getChildren().clear(); // this clears the percentage label
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        if(Clothes_count!=0)
+        {
+            pieChartData.add( new PieChart.Data("Clothes", (Clothes_count/total)*100));
+            String formattedpercent = String.format("%.1f", (Clothes_count/total)*100); // to show only 1 digit after the zero point
+            Label clothes_label = new Label("Clothes: "+formattedpercent+"%");
+            percentageLabels.getChildren().add(clothes_label);
+
+        }
+        if(Food_count!=0)
+        {
+            pieChartData.add( new PieChart.Data("Food", (Food_count/total)*100));
+            String formattedpercent = String.format("%.1f", (Food_count/total)*100); // to show only 1 digit after the zero point
+            Label Food_label = new Label("Food: "+formattedpercent+"%");
+            percentageLabels.getChildren().add(Food_label);
+        }
+        if(Transport_count!=0)
+        {
+            pieChartData.add( new PieChart.Data("Transport", (Transport_count/total)*100));
+            String formattedpercent = String.format("%.1f", (Transport_count/total)*100); // to show only 1 digit after the zero point
+            Label Transport_label = new Label("Transport: "+formattedpercent+"%");
+            percentageLabels.getChildren().add(Transport_label);
+        }
+        if(Electronics_count!=0)
+        {
+            pieChartData.add( new PieChart.Data("Electronics", (Electronics_count/total)*100));
+            String formattedpercent = String.format("%.1f", (Electronics_count/total)*100); // to show only 1 digit after the zero point
+            Label Electronics_label = new Label("Electronics: "+formattedpercent+"%");
+            percentageLabels.getChildren().add(Electronics_label);
+        }
+
+        expensePieChart.setData(pieChartData);
+
+
+
+
     }
 
     private void hide_update_expense_fields() {
@@ -188,6 +255,7 @@ public class ExpenseTrackerController {
             // Populate the table with the returned expenses
             List<Expense> expenses = expensesResponse.Value;
             expenseList.setAll(expenses);  // Updates the TableView with the new data
+            update_pie_chart(expenses);
             clear_button.setVisible(true);
             lowerDateRangeText.setDisable(true);
             upperDateRangeText.setDisable(true);
@@ -239,6 +307,7 @@ public class ExpenseTrackerController {
             clear_all_messages();
             List<Expense> expenses = expensesResponse.Value;
             expenseList.setAll(expenses);
+            update_pie_chart(expenses);
             clear_button.setVisible(true);
             description_filter_text.setDisable(true);
             desc_filter_button.setDisable(true);
@@ -337,6 +406,7 @@ public class ExpenseTrackerController {
             // Populate the table with the returned expenses
             List<Expense> expenses = expensesResponse.Value;
             expenseList.setAll(expenses);  // Updates the TableView with the new data
+            update_pie_chart(expenses);
             clear_button.setVisible(true);
             lowerCostRangeText.setDisable(true);
             upperCostRangeText.setDisable(true);
@@ -365,6 +435,7 @@ public class ExpenseTrackerController {
             clear_all_messages();
             // Populate the table with the returned expenses
             List<Expense> expenses = expensesResponse.Value;
+            update_pie_chart(expenses);
             expenseList.setAll(expenses);  // Updates the TableView with the new data
             clear_button.setVisible(true);
             categorySelectListView.getItems().forEach(checkBox -> {

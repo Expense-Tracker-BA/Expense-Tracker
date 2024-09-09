@@ -6,114 +6,121 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.ListView?>
-<VBox alignment="TOP_LEFT" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="Frontend.ExpenseTrackerController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.control.ChoiceBox?>
 
-    <!-- HBox to place Label and TextFields side by side -->
-    <HBox spacing="10.0" alignment="TOP_LEFT">
+<TabPane xmlns:fx="http://javafx.com/fxml" fx:controller="Frontend.ExpenseTrackerController">
+    <!-- Tab for filters and controls -->
+    <Tab text="Controls">
+        <VBox alignment="TOP_LEFT" spacing="20.0">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </padding>
 
-        <Label fx:id="dateRangeLabel" text="Show expenses in date range: "/>
-        <TextField fx:id="lowerDateRangeText" text="04-09-2024"/>
-        <TextField fx:id="upperDateRangeText" text="05-09-2024"/>
-        <Button fx:id ="date_filter_button" text="Show!" onAction="#onDateRangeShowButtonClick"/>
-        <Label fx:id="dateRangeErrorMessage" text="" style="-fx-text-fill: red;"/>
+            <!-- HBox to place Label and TextFields side by side -->
+            <HBox spacing="10.0" alignment="TOP_LEFT">
+                <Label fx:id="dateRangeLabel" text="Show expenses in date range: "/>
+                <TextField fx:id="lowerDateRangeText" text="04-09-2024"/>
+                <TextField fx:id="upperDateRangeText" text="05-09-2024"/>
+                <Button fx:id="date_filter_button" text="Show!" onAction="#onDateRangeShowButtonClick"/>
+                <Label fx:id="dateRangeErrorMessage" text="" style="-fx-text-fill: red;"/>
+            </HBox>
 
-    </HBox>
+            <HBox spacing="10.0" alignment="TOP_LEFT">
+                <Label fx:id="costRangeLabel" text="Show expenses in cost range: "/>
+                <TextField fx:id="lowerCostRangeText" text="0"/>
+                <TextField fx:id="upperCostRangeText" text="25.7"/>
+                <Button fx:id="cost_filter_button" text="Show!" onAction="#onCostRangeShowButtonClick"/>
+                <Label fx:id="costRangeErrorMessage" text="" style="-fx-text-fill: red;"/>
+            </HBox>
 
-    <HBox spacing="10.0" alignment="TOP_LEFT">
-        <Label fx:id="costRangeLabel" text="Show expenses in cost range: "/>
-        <TextField fx:id="lowerCostRangeText" text="0"/>
-        <TextField fx:id="upperCostRangeText" text="25.7"/>
-        <Button fx:id ="cost_filter_button" text="Show!" onAction="#onCostRangeShowButtonClick"/>
-        <Label fx:id="costRangeErrorMessage" text="" style="-fx-text-fill: red;"/>
-    </HBox>
+            <HBox spacing="10.0" alignment="TOP_LEFT">
+                <Label fx:id="CategoryLabel" text="Show expenses in categories: "/>
+                <ListView fx:id="categorySelectListView" prefWidth="200" prefHeight="200"/>
+                <Button fx:id="category_filter_button" text="Show!" onAction="#onCategoryShowButtonClick"/>
+                <Label fx:id="categoryErrorMessage" text="" style="-fx-text-fill: red;"/>
+            </HBox>
 
-    <HBox spacing="10.0" alignment="TOP_LEFT">
-        <Label fx:id="CategoryLabel" text="Show expenses in categories: "/>
-        <ListView fx:id="categorySelectListView" prefWidth="200" prefHeight="200"/>
-        <Button fx:id ="category_filter_button" text="Show!" onAction="#onCategoryShowButtonClick"/>
-        <Label fx:id="categoryErrorMessage" text="" style="-fx-text-fill: red;"/>
-    </HBox>
+            <HBox spacing="10.0" alignment="TOP_LEFT">
+                <Label fx:id="filter_by_desc" text="Filter by description: "/>
+                <TextField fx:id="description_filter_text" text=""/>
+                <Button fx:id="desc_filter_button" text="Filter!" onAction="#on_desc_filter_Click"/>
+                <Label fx:id="desc_filter_ErrorMessage" text="" style="-fx-text-fill: red;"/>
+            </HBox>
 
-    <HBox spacing="10.0" alignment="TOP_LEFT">
+            <HBox spacing="10.0" alignment="TOP_LEFT">
+                <Label fx:id="insert_expense" text="Insert Expense:  Date:"/>
+                <TextField fx:id="new_expense_date" text=""/>
+                <Label fx:id="new_expense_Description" text="Description:"/>
+                <TextField fx:id="new_expense_desc" text=""/>
+                <Label fx:id="new_expense_Cost" text="Cost:"/>
+                <TextField fx:id="new_expense_cost" text=""/>
+                <Label fx:id="new_expense_Category" text="Category:"/>
+                <ChoiceBox fx:id="categorychoicebox"/>
+                <Button fx:id="insert_expense_button" text="Insert!" onAction="#on_insert_expense_Click"/>
+                <Label fx:id="insert_expense_ErrorMessage" text="" style="-fx-text-fill: red;"/>
+            </HBox>
 
-        <Label fx:id="filter_by_desc" text="Filter by description: "/>
-        <TextField fx:id="description_filter_text" text=""/>
-        <Button fx:id ="desc_filter_button" text="Filter!" onAction="#on_desc_filter_Click"/>
-        <Label fx:id="desc_filter_ErrorMessage" text="" style="-fx-text-fill: red;"/>
+            <HBox spacing="10.0">
+                <Label fx:id="Remove_Expense" text="Remove Expense:  ID:"/>
+                <TextField fx:id="Expense_ID_to_remove" text=""/>
+                <Button fx:id="Remove_expense_button" text="Remove!" onAction="#on_remove_expense_Click"/>
+                <Label fx:id="remove_expense_ErrorMessage" text="" style="-fx-text-fill: red;"/>
+            </HBox>
 
-    </HBox>
+            <HBox spacing="10.0" alignment="TOP_LEFT">
+                <Label fx:id="update_expense" text="Update Expense:  ID:"/>
+                <TextField fx:id="expense_to_update_id" text=""/>
+                <Button fx:id="show_expense_to_update_button" text="Show!" onAction="#on_show_expense_to_update_Click"/>
+                <Label fx:id="show_expense_to_update_message" text="" style="-fx-text-fill: red;"/>
+                <Label fx:id="expense_to_update_date_label" text="Date:"/>
+                <TextField fx:id="expense_to_update_date_text" text=""/>
+                <Label fx:id="expense_to_update_Description_label" text="Description:"/>
+                <TextField fx:id="expense_to_update_Description_text" text=""/>
+                <Label fx:id="expense_to_update_Cost_label" text="Cost:"/>
+                <TextField fx:id="expense_to_update_cost_text" text=""/>
+                <Label fx:id="expense_to_update_category_label" text="Category:"/>
+                <ChoiceBox fx:id="categorychoicebox_update_expense"/>
+                <Button fx:id="update_expense_button" text="Update!" onAction="#on_update_expense_Click"/>
+                <Label fx:id="update_expense_ErrorMessage" text="" style="-fx-text-fill: red;"/>
+            </HBox>
 
-    <HBox spacing="10.0" alignment="TOP_LEFT">
+            <HBox spacing="10.0" alignment="CENTER">
+                <TableView fx:id="expenseTable" prefHeight="300" prefWidth="700" maxWidth="700">
+                    <columns>
+                        <TableColumn fx:id="IDColumn" text="ID" prefWidth="100"/>
+                        <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="150"/>
+                        <TableColumn fx:id="costColumn" text="Cost" prefWidth="100"/>
+                        <TableColumn fx:id="dateColumn" text="Date" prefWidth="150"/>
+                        <TableColumn fx:id="categoryColumn" text="Category" prefWidth="200"/>
+                    </columns>
+                </TableView>
+            </HBox>
 
-        <Label fx:id="insert_expense" text="Insert Expense:  Date:"/>
-        <TextField fx:id="new_expense_date" text=""/>
-        <Label fx:id="new_expense_Description" text="Description:"/>
-        <TextField fx:id="new_expense_desc" text=""/>
-        <Label fx:id="new_expense_Cost" text="Cost:"/>
-        <TextField fx:id="new_expense_cost" text=""/>
-        <Label fx:id="new_expense_Category" text="Category:"/>
-        <ChoiceBox fx:id="categorychoicebox"/>
-        <Button fx:id ="insert_expense_button" text="Insert!" onAction="#on_insert_expense_Click"/>
-        <Label fx:id="insert_expense_ErrorMessage" text="" style="-fx-text-fill: red;"/>
+            <HBox spacing="10.0" alignment="CENTER">
+                <Label fx:id="totalCostLabel" text="Total Cost: $0.00" style="-fx-font-size: 16px;"/>
+            </HBox>
 
-    </HBox>
-
-    <HBox spacing="10.0">
-
-        <Label fx:id="Remove_Expense" text="Remove Expense:  ID:"/>
-        <TextField fx:id="Expense_ID_to_remove" text=""/>
-        <Button fx:id ="Remove_expense_button" text="Remove!" onAction="#on_remove_expense_Click"/>
-        <Label fx:id="remove_expense_ErrorMessage" text="" style="-fx-text-fill: red;"/>
-
-    </HBox>
-    <HBox spacing="10.0" alignment="TOP_LEFT">
-
-        <Label fx:id="update_expense" text="Update Expense:  ID:"/>
-        <TextField fx:id="expense_to_update_id" text=""/>
-        <Button fx:id ="show_expense_to_update_button" text="Show!" onAction="#on_show_expense_to_update_Click"/>
-        <Label fx:id="show_expense_to_update_message" text="" style="-fx-text-fill: red;"/>
-        <Label fx:id="expense_to_update_date_label" text="Date:"/>
-        <TextField fx:id="expense_to_update_date_text" text=""/>
-        <Label fx:id="expense_to_update_Description_label" text="Description:"/>
-        <TextField fx:id="expense_to_update_Description_text" text=""/>
-        <Label fx:id="expense_to_update_Cost_label" text="Cost:"/>
-        <TextField fx:id="expense_to_update_cost_text" text=""/>
-        <Label fx:id="expense_to_update_category_label" text="Category:"/>
-        <ChoiceBox fx:id="categorychoicebox_update_expense"/>
-        <Button fx:id ="update_expense_button" text="Update!" onAction="#on_update_expense_Click"/>
-        <Label fx:id="update_expense_ErrorMessage" text="" style="-fx-text-fill: red;"/>
-
-    </HBox>
-
-    <HBox spacing="10.0" alignment="CENTER">
-        <!-- TableView to show the expenses -->
-        <TableView fx:id="expenseTable" prefHeight="300" prefWidth="700" maxWidth="700">
-            <columns>
-                <TableColumn fx:id="IDColumn" text="ID" prefWidth="100"/>
-                <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="150"/>
-                <TableColumn fx:id="costColumn" text="Cost" prefWidth="100"/>
-                <TableColumn fx:id="dateColumn" text="Date" prefWidth="150"/>
-                <TableColumn fx:id="categoryColumn" text="Category" prefWidth="200"/>
-            </columns>
-        </TableView>
-    </HBox>
-    <HBox spacing="10.0" alignment="CENTER">
-        <Label fx:id="totalCostLabel" text="Total Cost: $0.00" style="-fx-font-size: 16px;"/>
-    </HBox>
-    <HBox spacing="10.0" alignment="CENTER">
-        <Button fx:id="clear_button" text="Clear Filters!" visible="false" style="-fx-text-fill: red;" onAction="#Clear_filters"/>
-    </HBox>
+            <HBox spacing="10.0" alignment="CENTER">
+                <Button fx:id="clear_button" text="Clear Filters!" visible="false" style="-fx-text-fill: red;" onAction="#Clear_filters"/>
+            </HBox>
+        </VBox>
+    </Tab>
 
 
-</VBox>
+    <Tab text="Pie Chart">
+        <VBox alignment="CENTER" spacing="20.0">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </padding>
+            <VBox fx:id="percentageLabels" spacing="10.0" alignment="TOP_LEFT"/>
+            <PieChart fx:id="expensePieChart" prefWidth="600" prefHeight="400"/>
+        </VBox>
+    </Tab>
 
+</TabPane>
