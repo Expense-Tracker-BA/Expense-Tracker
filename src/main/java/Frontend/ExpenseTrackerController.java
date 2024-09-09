@@ -8,16 +8,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.PieChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.scene.layout.VBox;
@@ -173,7 +169,33 @@ public class ExpenseTrackerController {
         this.totalCostLabel.setText("Total Cost: $"+formattedCost);
         hide_update_expense_fields();
         update_pie_chart(expensesResponse.Value);
+        update_bar_chart(expensesResponse.Value);
+    }
 
+    private void update_bar_chart(List<Expense> expenses) {
+        String cost = "Cost";
+        String Date = "Date";
+
+        Map<String, Double> dateToTotalPriceMap = new HashMap<>();
+        for(Expense e : expenses){
+            if(!dateToTotalPriceMap.containsKey(e.getExpense_date_string())){
+                dateToTotalPriceMap.put(e.getExpense_date_string(), e.getCost());
+            }
+            else {
+                double temp = dateToTotalPriceMap.get(e.getExpense_date_string());
+                dateToTotalPriceMap.replace(e.getExpense_date_string(), temp, temp + e.getCost());
+            }
+        }
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Expenses");
+
+        for (Map.Entry<String, Double> entry : dateToTotalPriceMap.entrySet()) {
+            series.getData().add(new XYChart.Data<>(entry.getKey(),entry.getValue()));
+        }
+
+        expenseBarChart.getData().clear();  // Clear old data
+        expenseBarChart.getData().add(series);  // Add new data
     }
 
     private void update_pie_chart(List<Expense> expenses) {
@@ -229,10 +251,6 @@ public class ExpenseTrackerController {
         }
 
         expensePieChart.setData(pieChartData);
-
-
-
-
     }
 
     private void hide_update_expense_fields() {
@@ -267,6 +285,7 @@ public class ExpenseTrackerController {
             List<Expense> expenses = expensesResponse.Value;
             expenseList.setAll(expenses);  // Updates the TableView with the new data
             update_pie_chart(expenses);
+            update_bar_chart(expenses);
             clear_button.setVisible(true);
             lowerDateRangeText.setDisable(true);
             upperDateRangeText.setDisable(true);
@@ -319,6 +338,7 @@ public class ExpenseTrackerController {
             List<Expense> expenses = expensesResponse.Value;
             expenseList.setAll(expenses);
             update_pie_chart(expenses);
+            update_bar_chart(expenses);
             clear_button.setVisible(true);
             description_filter_text.setDisable(true);
             desc_filter_button.setDisable(true);
@@ -418,6 +438,7 @@ public class ExpenseTrackerController {
             List<Expense> expenses = expensesResponse.Value;
             expenseList.setAll(expenses);  // Updates the TableView with the new data
             update_pie_chart(expenses);
+            update_bar_chart(expenses);
             clear_button.setVisible(true);
             lowerCostRangeText.setDisable(true);
             upperCostRangeText.setDisable(true);
@@ -447,6 +468,7 @@ public class ExpenseTrackerController {
             // Populate the table with the returned expenses
             List<Expense> expenses = expensesResponse.Value;
             update_pie_chart(expenses);
+            update_bar_chart(expenses);
             expenseList.setAll(expenses);  // Updates the TableView with the new data
             clear_button.setVisible(true);
             categorySelectListView.getItems().forEach(checkBox -> {
