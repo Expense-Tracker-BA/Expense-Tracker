@@ -19,7 +19,7 @@
 <?import javafx.scene.chart.NumberAxis?>
 <TabPane xmlns:fx="http://javafx.com/fxml" fx:controller="Frontend.ExpenseTrackerController">
     <!-- Tab for filters and controls -->
-    <Tab text="Controls">
+    <Tab text="Controls" closable="false">
         <VBox alignment="TOP_LEFT" spacing="20.0">
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
@@ -36,8 +36,8 @@
 
             <HBox spacing="10.0" alignment="TOP_LEFT">
                 <Label fx:id="costRangeLabel" text="Show expenses in cost range: "/>
-                <TextField fx:id="lowerCostRangeText" text="0"/>
-                <TextField fx:id="upperCostRangeText" text="25.7"/>
+                <TextField fx:id="lowerCostRangeText" text=""/>
+                <TextField fx:id="upperCostRangeText" text=""/>
                 <Button fx:id="cost_filter_button" text="Show!" onAction="#onCostRangeShowButtonClick"/>
                 <Label fx:id="costRangeErrorMessage" text="" style="-fx-text-fill: red;"/>
             </HBox>
@@ -116,7 +116,7 @@
     </Tab>
 
 
-    <Tab text="Pie Chart">
+    <Tab text="Pie Chart" closable="false">
         <VBox alignment="CENTER" spacing="20.0">
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
@@ -126,7 +126,7 @@
         </VBox>
     </Tab>
 
-    <Tab text="Bar Chart">
+    <Tab text="Bar Chart" closable="false">
         <VBox alignment="CENTER" spacing="20.0">
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
