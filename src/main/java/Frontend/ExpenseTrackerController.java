@@ -124,7 +124,7 @@ public class ExpenseTrackerController {
         dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExpense_date_string()));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
 
-
+        dateColumn.setComparator(dateComparator);
         expenseTable.setItems(expenseList);
         ExtractAll();
         ObservableList<String> categories = FXCollections.observableArrayList(
@@ -159,6 +159,16 @@ public class ExpenseTrackerController {
             }
         });
     }
+
+
+
+    private static Comparator<String> dateComparator = (date1, date2) -> {
+
+        DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate d1 = LocalDate.parse(date1, DATE_FORMATTER);
+        LocalDate d2 = LocalDate.parse(date2, DATE_FORMATTER);
+        return d1.compareTo(d2);
+    };
 
 
     private void ExtractAll()
